@@ -1,0 +1,1012 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title id="page-title">AI Employee Demo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Clash+Display:wght@400;500;600;700&family=Syne:wght@400;500;700;800&family=Inter:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --navy: #06091A;
+    --navy2: #0D1530;
+    --blue: #1A6BF0;
+    --blue-light: #3D87FF;
+    --gold: #C9922A;
+    --gold-light: #F5B942;
+    --cream: #F7F4EE;
+    --white: #FFFFFF;
+    --gray: #8892A4;
+    --gray-light: #C4CBDA;
+    --green: #0FA958;
+    --red: #E03939;
+  }
+
+  *{margin:0;padding:0;box-sizing:border-box}
+
+  html{scroll-behavior:smooth}
+
+  body {
+    font-family:'Inter',sans-serif;
+    background: var(--navy);
+    color: var(--white);
+    overflow-x: hidden;
+    min-height: 100vh;
+  }
+
+  /* ── ANIMATED BG ── */
+  .bg-canvas {
+    position: fixed; inset: 0; z-index: 0; pointer-events: none;
+    overflow: hidden;
+  }
+  .blob {
+    position: absolute; border-radius: 50%;
+    filter: blur(90px); opacity: 0.18;
+    animation: drift 18s ease-in-out infinite;
+  }
+  .blob-1 { width:600px;height:600px;background:#1A6BF0;top:-200px;left:-150px; animation-delay:0s }
+  .blob-2 { width:500px;height:500px;background:#C9922A;bottom:-150px;right:-100px; animation-delay:-6s }
+  .blob-3 { width:350px;height:350px;background:#3D87FF;top:40%;left:60%; animation-delay:-12s }
+
+  @keyframes drift {
+    0%,100%{transform:translate(0,0) scale(1)}
+    33%{transform:translate(30px,-40px) scale(1.05)}
+    66%{transform:translate(-20px,30px) scale(0.95)}
+  }
+
+  /* Floating particles */
+  .particles { position:fixed;inset:0;z-index:0;pointer-events:none }
+  .particle {
+    position:absolute;width:3px;height:3px;border-radius:50%;
+    background:var(--blue-light);opacity:0;
+    animation: float-up 12s linear infinite;
+  }
+  @keyframes float-up {
+    0%{transform:translateY(100vh) scale(0);opacity:0}
+    10%{opacity:0.6}
+    90%{opacity:0.2}
+    100%{transform:translateY(-10vh) scale(1.5);opacity:0}
+  }
+
+  /* ── LAYOUT ── */
+  .page { position:relative;z-index:1 }
+
+  /* ── NAVBAR ── */
+  nav {
+    display:flex;align-items:center;justify-content:space-between;
+    padding:20px 5%;
+    border-bottom:1px solid rgba(255,255,255,0.06);
+    backdrop-filter:blur(20px);
+    background:rgba(6,9,26,0.7);
+    position:sticky;top:0;z-index:100;
+  }
+  .logo {
+    font-family:'Syne',sans-serif;
+    font-size:20px;font-weight:800;
+    letter-spacing:-0.02em;
+    color:var(--white);
+  }
+  .logo span{color:var(--gold-light)}
+  .nav-badge {
+    display:flex;align-items:center;gap:8px;
+    font-size:12px;color:var(--gray);
+    background:rgba(255,255,255,0.05);
+    border:1px solid rgba(255,255,255,0.1);
+    border-radius:100px;padding:6px 14px;
+  }
+  .nav-badge .dot{width:7px;height:7px;border-radius:50%;background:var(--green);
+    animation:pulse-dot 2s ease infinite}
+  @keyframes pulse-dot{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(15,169,88,0.4)}
+    50%{opacity:0.8;box-shadow:0 0 0 6px rgba(15,169,88,0)}}
+  .btn-gold {
+    font-family:'Syne',sans-serif;font-size:13px;font-weight:700;
+    letter-spacing:0.03em;
+    background:linear-gradient(135deg,var(--gold),var(--gold-light));
+    color:var(--navy);border:none;
+    padding:10px 22px;border-radius:100px;cursor:pointer;
+    transition:all .25s;box-shadow:0 4px 20px rgba(201,146,42,0.3);
+  }
+  .btn-gold:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(201,146,42,0.5)}
+
+  /* ── HERO ── */
+  .hero {
+    display:grid;grid-template-columns:1fr 1fr;
+    align-items:center;gap:60px;
+    padding:80px 5% 60px;
+    min-height:92vh;
+  }
+
+  .hero-left { animation: slide-in-left 0.8s cubic-bezier(0.22,1,0.36,1) both }
+  @keyframes slide-in-left {
+    from{opacity:0;transform:translateX(-40px)}
+    to{opacity:1;transform:translateX(0)}
+  }
+
+  .industry-label {
+    display:inline-flex;align-items:center;gap:8px;
+    font-size:11px;font-weight:500;letter-spacing:0.12em;
+    text-transform:uppercase;color:var(--blue-light);
+    background:rgba(26,107,240,0.12);
+    border:1px solid rgba(26,107,240,0.25);
+    border-radius:100px;padding:7px 16px;margin-bottom:28px;
+  }
+
+  .hero-headline {
+    font-family:'Clash Display',sans-serif;
+    font-size:clamp(48px,6vw,82px);
+    font-weight:700;line-height:1.0;
+    letter-spacing:-0.03em;
+    margin-bottom:24px;
+  }
+  .hero-headline .line-ar {
+    font-size:clamp(52px,6.5vw,88px);
+    display:block;
+    background:linear-gradient(135deg,var(--white) 30%,var(--blue-light));
+    -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+    background-clip:text;
+  }
+  .hero-headline .line-en {
+    display:block;color:var(--gray-light);
+    font-size:clamp(18px,2vw,26px);font-weight:400;
+    letter-spacing:0;
+    margin-top:12px;line-height:1.4;
+    -webkit-text-fill-color:var(--gray-light);
+  }
+  .hero-headline .highlight {
+    color:var(--gold-light);
+    -webkit-text-fill-color:var(--gold-light);
+  }
+
+  /* Pain stats */
+  .stats-row {
+    display:flex;flex-wrap:wrap;gap:10px;
+    margin:32px 0 36px;
+  }
+  .stat-pill {
+    display:flex;align-items:center;gap:8px;
+    font-size:12px;font-weight:500;
+    padding:8px 14px;border-radius:100px;
+    border:1px solid;
+    animation:fade-up 0.6s ease both;
+  }
+  .stat-pill.red{background:rgba(224,57,57,0.1);border-color:rgba(224,57,57,0.3);color:#FF7777}
+  .stat-pill.amber{background:rgba(245,185,66,0.1);border-color:rgba(245,185,66,0.3);color:var(--gold-light)}
+  .stat-pill.blue{background:rgba(61,135,255,0.1);border-color:rgba(61,135,255,0.3);color:var(--blue-light)}
+  .stat-pill:nth-child(1){animation-delay:.2s}
+  .stat-pill:nth-child(2){animation-delay:.35s}
+  .stat-pill:nth-child(3){animation-delay:.5s}
+
+  @keyframes fade-up{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+
+  .hero-sub {
+    font-size:15px;line-height:1.75;color:var(--gray);
+    margin-bottom:36px;max-width:480px;
+  }
+
+  .channels {
+    display:flex;align-items:center;gap:6px;
+    margin-bottom:40px;flex-wrap:wrap;
+  }
+  .channel-chip {
+    display:flex;align-items:center;gap:6px;
+    font-size:12px;font-weight:500;
+    background:rgba(255,255,255,0.05);
+    border:1px solid rgba(255,255,255,0.12);
+    border-radius:100px;padding:6px 14px;
+    color:var(--gray-light);
+  }
+  .channel-chip svg{width:14px;height:14px}
+  .ch-sep{color:rgba(255,255,255,0.2);font-size:18px}
+
+  .cta-block { display:flex;flex-direction:column;gap:12px }
+  .cta-label {
+    font-size:11px;font-weight:600;letter-spacing:0.1em;
+    text-transform:uppercase;color:var(--blue-light);
+  }
+  .btn-primary {
+    display:inline-flex;align-items:center;gap:10px;
+    font-family:'Syne',sans-serif;font-size:14px;font-weight:700;
+    background:var(--blue);color:var(--white);
+    border:none;border-radius:12px;
+    padding:16px 28px;cursor:pointer;
+    transition:all .25s;
+    box-shadow:0 8px 32px rgba(26,107,240,0.35);
+    width:fit-content;
+  }
+  .btn-primary:hover{background:var(--blue-light);transform:translateY(-2px);
+    box-shadow:0 12px 40px rgba(26,107,240,0.5)}
+  .btn-wa {
+    display:inline-flex;align-items:center;gap:10px;
+    font-family:'Syne',sans-serif;font-size:14px;font-weight:600;
+    background:rgba(15,169,88,0.12);color:#4ADE80;
+    border:1px solid rgba(15,169,88,0.3);border-radius:12px;
+    padding:16px 28px;cursor:pointer;
+    transition:all .25s;width:fit-content;
+  }
+  .btn-wa:hover{background:rgba(15,169,88,0.2);transform:translateY(-2px)}
+
+  /* ── PHONE MOCKUP ── */
+  .hero-right {
+    display:flex;flex-direction:column;align-items:center;
+    position:relative;
+    animation:float-phone 6s ease-in-out infinite;
+  }
+  @keyframes float-phone{
+    0%,100%{transform:translateY(0) perspective(1200px) rotateY(-8deg) rotateX(3deg)}
+    50%{transform:translateY(-16px) perspective(1200px) rotateY(-8deg) rotateX(3deg)}
+  }
+
+  .phone-wrap {
+    position:relative;
+    transform:perspective(1200px) rotateY(-8deg) rotateX(3deg);
+    filter:drop-shadow(0 60px 80px rgba(26,107,240,0.25));
+  }
+
+  .phone-frame {
+    width:300px;
+    background:linear-gradient(160deg,#8E8E93,#3A3A3C,#636366);
+    border-radius:50px;
+    padding:3px;
+    position:relative;
+    box-shadow:
+      inset 0 0 0 1px rgba(255,255,255,0.15),
+      0 0 0 1px rgba(0,0,0,0.5);
+  }
+  .phone-frame::before {
+    content:'';position:absolute;
+    top:0;left:0;width:40%;height:100%;
+    background:linear-gradient(90deg,rgba(255,255,255,0.12),transparent);
+    border-radius:50px 0 0 50px;pointer-events:none;z-index:10;
+  }
+  .phone-inner {
+    background:var(--navy);
+    border-radius:48px;
+    overflow:hidden;
+    position:relative;
+    height:600px;
+  }
+  /* Dynamic island */
+  .dynamic-island {
+    position:absolute;top:14px;left:50%;
+    transform:translateX(-50%);
+    width:110px;height:32px;
+    background:#000;border-radius:20px;
+    z-index:20;
+  }
+  /* Screen content */
+  .phone-screen {
+    position:absolute;inset:0;
+    overflow:hidden;
+  }
+  .screen-zoom {
+    transform:scale(1.1);
+    transform-origin:top center;
+    height:100%;
+  }
+
+  /* Mini website inside phone */
+  .mini-site {
+    height:100%;display:flex;flex-direction:column;
+    background:#F8F9FC;
+    padding-top:46px;
+    font-family:'Inter',sans-serif;
+  }
+  .mini-nav {
+    background:#fff;border-bottom:1px solid #E5E7EB;
+    padding:10px 16px;
+    display:flex;align-items:center;justify-content:space-between;
+    position:absolute;top:46px;left:0;right:0;z-index:5;
+  }
+  .mini-logo {
+    font-size:11px;font-weight:700;color:#0A1628;
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:120px;
+  }
+  .mini-call-btn {
+    font-size:9px;font-weight:600;
+    background:#0FA958;color:#fff;
+    border-radius:20px;padding:4px 10px;
+    white-space:nowrap;
+  }
+  .mini-hero {
+    margin-top:44px;
+    background:linear-gradient(135deg,#0D1530,#1A3A7A);
+    padding:20px 16px;
+    flex-shrink:0;
+  }
+  .mini-hero h2{
+    font-size:13px;font-weight:700;color:#fff;
+    line-height:1.35;margin-bottom:6px;
+  }
+  .mini-hero p{font-size:9px;color:rgba(255,255,255,0.65);line-height:1.5}
+  .mini-content{padding:14px 16px;flex:1;overflow:hidden}
+  .mini-service {
+    background:#fff;border-radius:10px;padding:10px 12px;margin-bottom:8px;
+    display:flex;align-items:center;gap:8px;
+    border:1px solid #E5E7EB;
+  }
+  .mini-service-icon{
+    width:28px;height:28px;border-radius:8px;
+    background:linear-gradient(135deg,#1A6BF0,#3D87FF);
+    display:flex;align-items:center;justify-content:center;
+    font-size:14px;flex-shrink:0;
+  }
+  .mini-service-text{flex:1}
+  .mini-service-title{font-size:10px;font-weight:600;color:#0A1628;margin-bottom:2px}
+  .mini-service-sub{font-size:8px;color:#8892A4}
+
+  /* WhatsApp bubble */
+  .wa-bubble {
+    position:absolute;bottom:80px;right:14px;z-index:20;
+    width:42px;height:42px;border-radius:50%;
+    background:#25D366;
+    display:flex;align-items:center;justify-content:center;
+    box-shadow:0 4px 16px rgba(37,211,102,0.5);
+    animation:wa-pulse 2.5s ease infinite;
+    cursor:pointer;
+  }
+  @keyframes wa-pulse{
+    0%,100%{box-shadow:0 4px 16px rgba(37,211,102,0.5)}
+    50%{box-shadow:0 4px 28px rgba(37,211,102,0.8),0 0 0 8px rgba(37,211,102,0.15)}
+  }
+
+  /* Booking confirmation overlay */
+  .booking-overlay {
+    position:absolute;inset:0;z-index:30;
+    background:rgba(6,9,26,0.85);backdrop-filter:blur(8px);
+    display:none;flex-direction:column;align-items:center;justify-content:center;
+    padding:24px;
+  }
+  .booking-overlay.active{display:flex;animation:pop-in .4s cubic-bezier(0.34,1.56,0.64,1) both}
+  @keyframes pop-in{from{opacity:0;transform:scale(0.8)}to{opacity:1;transform:scale(1)}}
+  .booking-card {
+    background:linear-gradient(135deg,#0D1530,#1A3A7A);
+    border:1.5px solid var(--gold);
+    border-radius:20px;padding:28px 24px;text-align:center;
+    box-shadow:0 0 60px rgba(201,146,42,0.3);width:100%;
+  }
+  .booking-check{
+    width:52px;height:52px;border-radius:50%;
+    background:linear-gradient(135deg,var(--gold),var(--gold-light));
+    display:flex;align-items:center;justify-content:center;
+    margin:0 auto 14px;font-size:24px;
+  }
+  .booking-title{
+    font-size:9px;font-weight:600;letter-spacing:0.1em;
+    text-transform:uppercase;color:var(--gold-light);
+    margin-bottom:6px;
+  }
+  .booking-name{
+    font-family:'Syne',sans-serif;font-weight:800;
+    font-size:13px;color:#fff;margin-bottom:10px;
+  }
+  .booking-time{
+    background:rgba(255,255,255,0.08);border-radius:10px;
+    padding:8px;font-size:10px;color:var(--gray-light);
+  }
+
+  /* Phone status badge */
+  .phone-badge {
+    position:absolute;top:-16px;right:-16px;z-index:30;
+    background:#fff;border-radius:100px;
+    padding:7px 14px;
+    display:flex;align-items:center;gap:7px;
+    font-size:11px;font-weight:500;color:#0A1628;
+    box-shadow:0 8px 30px rgba(0,0,0,0.25);
+    white-space:nowrap;
+  }
+  .phone-badge .dot{width:8px;height:8px;border-radius:50%;background:var(--green);
+    animation:pulse-dot 2s ease infinite}
+
+  /* ── CHAT MODAL ── */
+  .chat-modal {
+    display:none;position:fixed;inset:0;z-index:200;
+    background:rgba(6,9,26,0.85);backdrop-filter:blur(12px);
+    align-items:center;justify-content:center;padding:20px;
+  }
+  .chat-modal.open{display:flex}
+  .chat-box {
+    background:#0D1530;border:1px solid rgba(255,255,255,0.1);
+    border-radius:24px;width:100%;max-width:440px;
+    overflow:hidden;box-shadow:0 40px 80px rgba(0,0,0,0.6);
+    display:flex;flex-direction:column;height:600px;
+  }
+  .chat-header {
+    padding:18px 20px;border-bottom:1px solid rgba(255,255,255,0.08);
+    display:flex;align-items:center;gap:12px;
+    background:rgba(255,255,255,0.03);
+  }
+  .chat-avatar {
+    width:38px;height:38px;border-radius:50%;
+    background:linear-gradient(135deg,var(--blue),var(--blue-light));
+    display:flex;align-items:center;justify-content:center;font-size:16px;
+  }
+  .chat-name-block{ flex:1 }
+  .chat-name{font-size:14px;font-weight:600;color:#fff}
+  .chat-status{font-size:11px;color:var(--green);display:flex;align-items:center;gap:5px}
+  .chat-close{
+    background:rgba(255,255,255,0.08);border:none;color:var(--gray);
+    width:30px;height:30px;border-radius:50%;cursor:pointer;font-size:16px;
+    transition:.2s;display:flex;align-items:center;justify-content:center;
+  }
+  .chat-close:hover{background:rgba(255,255,255,0.15);color:#fff}
+  .chat-msgs{flex:1;overflow-y:auto;padding:20px;display:flex;flex-direction:column;gap:14px}
+  .chat-msgs::-webkit-scrollbar{width:4px}
+  .chat-msgs::-webkit-scrollbar-track{background:transparent}
+  .chat-msgs::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.1);border-radius:4px}
+  .msg{display:flex;flex-direction:column;max-width:82%}
+  .msg.user{align-self:flex-end;align-items:flex-end}
+  .msg.ai{align-self:flex-start;align-items:flex-start}
+  .bubble{padding:11px 15px;border-radius:18px;font-size:13px;line-height:1.55}
+  .msg.user .bubble{background:var(--blue);color:#fff;border-bottom-right-radius:4px}
+  .msg.ai .bubble{background:rgba(255,255,255,0.07);color:var(--gray-light);
+    border:1px solid rgba(255,255,255,0.08);border-bottom-left-radius:4px}
+  .msg-time{font-size:10px;color:var(--gray);margin-top:4px;padding:0 4px}
+  .typing-dots{display:flex;align-items:center;gap:4px;padding:14px 16px;
+    background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.08);
+    border-radius:18px;border-bottom-left-radius:4px;width:fit-content}
+  .typing-dots span{
+    width:6px;height:6px;border-radius:50%;
+    background:var(--gray);display:block;
+    animation:typing-dot 1.2s ease infinite;
+  }
+  .typing-dots span:nth-child(2){animation-delay:.2s}
+  .typing-dots span:nth-child(3){animation-delay:.4s}
+  @keyframes typing-dot{0%,80%,100%{transform:scale(0.7);opacity:0.4}
+    40%{transform:scale(1);opacity:1}}
+  .chat-input-row{
+    padding:16px;border-top:1px solid rgba(255,255,255,0.08);
+    display:flex;gap:10px;
+  }
+  .chat-input{
+    flex:1;background:rgba(255,255,255,0.06);
+    border:1px solid rgba(255,255,255,0.1);
+    border-radius:12px;padding:12px 16px;
+    color:#fff;font-size:13px;font-family:'Inter',sans-serif;
+    outline:none;transition:.2s;resize:none;
+  }
+  .chat-input:focus{border-color:var(--blue);background:rgba(26,107,240,0.08)}
+  .chat-input::placeholder{color:var(--gray)}
+  .chat-send{
+    background:var(--blue);border:none;color:#fff;
+    width:44px;height:44px;border-radius:12px;cursor:pointer;
+    font-size:18px;transition:.2s;display:flex;align-items:center;justify-content:center;
+    flex-shrink:0;
+  }
+  .chat-send:hover{background:var(--blue-light);transform:scale(1.05)}
+
+  .booking-success {
+    background:linear-gradient(135deg,rgba(15,169,88,0.15),rgba(15,169,88,0.05));
+    border:1px solid rgba(15,169,88,0.4);
+    border-radius:14px;padding:14px;margin-top:4px;text-align:center;
+  }
+  .booking-success-title{font-size:12px;font-weight:600;color:#4ADE80;margin-bottom:4px}
+  .booking-success-sub{font-size:11px;color:var(--gray)}
+
+  /* ── FEATURES SECTION ── */
+  .features {
+    padding:80px 5%;
+    border-top:1px solid rgba(255,255,255,0.05);
+  }
+  .section-label{
+    text-align:center;font-size:11px;font-weight:600;
+    letter-spacing:0.12em;text-transform:uppercase;
+    color:var(--blue-light);margin-bottom:16px;
+  }
+  .section-title{
+    text-align:center;
+    font-family:'Clash Display',sans-serif;
+    font-size:clamp(28px,4vw,46px);font-weight:700;
+    letter-spacing:-0.02em;margin-bottom:56px;
+  }
+  .features-grid{
+    display:grid;grid-template-columns:repeat(3,1fr);
+    gap:20px;max-width:980px;margin:0 auto;
+  }
+  .feat-card{
+    background:rgba(255,255,255,0.03);
+    border:1px solid rgba(255,255,255,0.08);
+    border-radius:20px;padding:28px 24px;
+    transition:all .25s;position:relative;overflow:hidden;
+  }
+  .feat-card::before{
+    content:'';position:absolute;inset:0;
+    background:linear-gradient(135deg,rgba(26,107,240,0.06),transparent);
+    opacity:0;transition:.3s;
+  }
+  .feat-card:hover{border-color:rgba(26,107,240,0.3);transform:translateY(-4px)}
+  .feat-card:hover::before{opacity:1}
+  .feat-icon{
+    width:44px;height:44px;border-radius:12px;
+    display:flex;align-items:center;justify-content:center;
+    font-size:20px;margin-bottom:18px;
+  }
+  .feat-icon.blue{background:rgba(26,107,240,0.15)}
+  .feat-icon.purple{background:rgba(147,51,234,0.15)}
+  .feat-icon.green{background:rgba(15,169,88,0.15)}
+  .feat-title{
+    font-family:'Syne',sans-serif;font-size:16px;font-weight:700;
+    color:#fff;margin-bottom:10px;
+  }
+  .feat-body{font-size:13px;color:var(--gray);line-height:1.65;margin-bottom:16px}
+  .feat-badge{
+    display:inline-flex;align-items:center;gap:6px;
+    font-size:11px;font-weight:500;
+    padding:5px 12px;border-radius:100px;
+  }
+  .feat-badge.blue{background:rgba(26,107,240,0.12);color:var(--blue-light);
+    border:1px solid rgba(26,107,240,0.25)}
+  .feat-badge.purple{background:rgba(147,51,234,0.12);color:#C084FC;
+    border:1px solid rgba(147,51,234,0.25)}
+  .feat-badge.green{background:rgba(15,169,88,0.12);color:#4ADE80;
+    border:1px solid rgba(15,169,88,0.25)}
+  .feat-badge .dot{width:6px;height:6px;border-radius:50%;background:currentColor}
+
+  /* ── FINAL CTA ── */
+  .final-cta{
+    padding:80px 5%;text-align:center;
+    border-top:1px solid rgba(255,255,255,0.05);
+  }
+  .final-cta h2{
+    font-family:'Clash Display',sans-serif;
+    font-size:clamp(32px,5vw,58px);font-weight:700;
+    letter-spacing:-0.025em;margin-bottom:16px;
+  }
+  .final-cta p{font-size:16px;color:var(--gray);margin-bottom:36px}
+  .final-btns{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
+
+  /* ── FOOTER ── */
+  footer{
+    padding:28px 5%;
+    border-top:1px solid rgba(255,255,255,0.05);
+    display:flex;align-items:center;justify-content:space-between;
+    font-size:12px;color:var(--gray);
+  }
+
+  /* ── RESPONSIVE ── */
+  @media(max-width:900px){
+    .hero{grid-template-columns:1fr;padding:60px 5%;min-height:auto;gap:40px}
+    .hero-right{order:-1}
+    .phone-frame{width:250px}
+    .phone-inner{height:500px}
+    .features-grid{grid-template-columns:1fr}
+    .final-btns{flex-direction:column;align-items:center}
+  }
+</style>
+</head>
+<body>
+
+<!-- Animated background -->
+<div class="bg-canvas">
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+  <div class="blob blob-3"></div>
+</div>
+<div class="particles" id="particles"></div>
+
+<div class="page">
+
+<!-- ── NAVBAR ── -->
+<nav>
+  <div class="logo">Elegant Options <span>AI</span></div>
+  <div class="nav-badge">
+    <span class="dot"></span>
+    <span id="nav-status">AI Online · Responding now</span>
+  </div>
+  <button class="btn-gold" id="book-btn">Book a Strategy Call</button>
+</nav>
+
+<!-- ── HERO ── -->
+<section class="hero">
+  <div class="hero-left">
+
+    <div class="industry-label">
+      <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+        <circle cx="5" cy="5" r="4" fill="#3D87FF"/>
+      </svg>
+      AI Employee for <span id="lbl-industry">Home Services</span> · <span id="lbl-city">Your City</span>
+    </div>
+
+    <h1 class="hero-headline">
+      <span class="line-ar">لا تفقد مزيداً<br>من المكالمات.</span>
+      <span class="line-en">
+        Every missed call in <span class="highlight" id="h-city">Your City</span> is money in your competitor's pocket.
+      </span>
+    </h1>
+
+    <div class="stats-row">
+      <div class="stat-pill red">
+        <span>⚠</span> 62% of callers never call back
+      </div>
+      <div class="stat-pill amber">
+        <span>💸</span> $4,200 avg lost per missed lead
+      </div>
+      <div class="stat-pill blue">
+        <span>⚡</span> AI answers in under 3 seconds
+      </div>
+    </div>
+
+    <p class="hero-sub">
+      Meet <strong id="sub-biz" style="color:#fff"></strong>'s new AI Employee — trained specifically for
+      <span id="sub-industry">home services</span> in <span id="sub-city">your city</span>.
+      It never sleeps. It qualifies every lead and books serious clients directly into your calendar.
+    </p>
+
+    <div class="channels">
+      <div class="channel-chip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 010 20M12 2a15 15 0 000 20"/>
+        </svg>
+        Website
+      </div>
+      <span class="ch-sep">·</span>
+      <div class="channel-chip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 014.07 12 19.79 19.79 0 011 3.18 2 2 0 012.18 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.91 9.91a16 16 0 006.72 6.72l1.28-1.28a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/>
+        </svg>
+        Phone Line
+      </div>
+      <span class="ch-sep">·</span>
+      <div class="channel-chip" style="color:#4ADE80;border-color:rgba(74,222,128,0.25);background:rgba(74,222,128,0.06)">
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+          <path d="M12 0C5.374 0 0 5.373 0 12c0 2.117.554 4.1 1.522 5.826L.057 23.854a.5.5 0 00.608.61l6.084-1.464A11.94 11.94 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.933 0-3.742-.523-5.291-1.432l-.38-.222-3.931.947.964-3.85-.247-.398A9.972 9.972 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/>
+        </svg>
+        WhatsApp
+      </div>
+    </div>
+
+    <div class="cta-block">
+      <div class="cta-label">Experience a live demo for <span id="cta-biz">Your Business</span></div>
+      <div style="display:flex;gap:12px;flex-wrap:wrap">
+        <button class="btn-primary" onclick="openChat()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/>
+          </svg>
+          See Live Demo
+        </button>
+        <button class="btn-wa" id="wa-btn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+            <path d="M12 0C5.374 0 0 5.373 0 12c0 2.117.554 4.1 1.522 5.826L.057 23.854a.5.5 0 00.608.61l6.084-1.464A11.94 11.94 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.933 0-3.742-.523-5.291-1.432l-.38-.222-3.931.947.964-3.85-.247-.398A9.972 9.972 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/>
+          </svg>
+          Try on WhatsApp
+        </button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- PHONE -->
+  <div class="hero-right">
+    <div class="phone-badge">
+      <span class="dot"></span>
+      AI Online · Responding now
+    </div>
+    <div class="phone-wrap">
+      <div class="phone-frame">
+        <div class="phone-inner">
+          <div class="dynamic-island"></div>
+          <div class="phone-screen">
+            <div class="screen-zoom">
+              <div class="mini-site">
+
+                <!-- Mini nav -->
+                <div class="mini-nav">
+                  <div class="mini-logo" id="phone-biz-name">Business Name</div>
+                  <div class="mini-call-btn">📞 Call Now</div>
+                </div>
+
+                <!-- Mini hero -->
+                <div class="mini-hero">
+                  <h2 id="phone-hero-title">Professional Services<br>in Your City</h2>
+                  <p>Trusted by hundreds of customers. Available 24/7.</p>
+                </div>
+
+                <!-- Services -->
+                <div class="mini-content">
+                  <div id="phone-services"></div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+          <!-- WhatsApp bubble -->
+          <div class="wa-bubble" onclick="openChat()">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="white">
+              <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.374 0 0 5.373 0 12c0 2.117.554 4.1 1.522 5.826L.057 23.854a.5.5 0 00.608.61l6.084-1.464A11.94 11.94 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.933 0-3.742-.523-5.291-1.432l-.38-.222-3.931.947.964-3.85-.247-.398A9.972 9.972 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/>
+            </svg>
+          </div>
+
+          <!-- Booking overlay -->
+          <div class="booking-overlay" id="booking-overlay">
+            <div class="booking-card">
+              <div class="booking-check">✓</div>
+              <div class="booking-title">Appointment Confirmed For</div>
+              <div class="booking-name" id="booking-biz-name">Business Name</div>
+              <div class="booking-time" id="booking-time">Today at 2:00 PM · Your address in city</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FEATURES ── -->
+<section class="features">
+  <div class="section-label">One AI Employee. Three Channels.</div>
+  <h2 class="section-title">Zero Missed Leads.</h2>
+  <div class="features-grid">
+    <div class="feat-card">
+      <div class="feat-icon blue">🌐</div>
+      <div class="feat-title">Website Chat</div>
+      <div class="feat-body">Instantly responds to every visitor on <span class="feat-biz"></span>'s website. Qualifies the lead, answers questions, and books the appointment — automatically.</div>
+      <div class="feat-badge blue"><span class="dot"></span> Active on your site</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon purple">📞</div>
+      <div class="feat-title">Phone Line AI</div>
+      <div class="feat-body">Answers every call when you're busy. Speaks naturally, handles FAQs, and books emergency slots directly — in seconds, not voicemails.</div>
+      <div class="feat-badge purple"><span class="dot"></span> Answers in 2 rings</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon green">💬</div>
+      <div class="feat-title">WhatsApp AI</div>
+      <div class="feat-body">Your customers already use WhatsApp. Your AI responds in seconds, sends booking confirmations, and follows up — all without you lifting a finger.</div>
+      <div class="feat-badge green"><span class="dot"></span> Most preferred channel</div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FINAL CTA ── -->
+<section class="final-cta">
+  <h2>Your AI Employee<br>is Ready to Deploy.</h2>
+  <p>Give <strong id="final-biz" style="color:#fff">your business</strong> the unfair advantage. Never miss another call.</p>
+  <div class="final-btns">
+    <button class="btn-gold" style="font-size:15px;padding:16px 36px;border-radius:14px" id="final-book-btn">
+      CLAIM MY AI EMPLOYEE
+    </button>
+    <button class="btn-primary" onclick="openChat()">
+      Watch the Demo First
+    </button>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div>Powered by <strong style="color:#fff">Elegant Options AI</strong></div>
+  <div style="display:flex;gap:20px">
+    <a href="#" style="color:inherit;text-decoration:none">Privacy Policy</a>
+    <a href="#" style="color:inherit;text-decoration:none">Terms</a>
+  </div>
+</footer>
+
+</div><!-- end .page -->
+
+<!-- ── CHAT MODAL ── -->
+<div class="chat-modal" id="chat-modal">
+  <div class="chat-box">
+    <div class="chat-header">
+      <div class="chat-avatar">🤖</div>
+      <div class="chat-name-block">
+        <div class="chat-name" id="chat-agent-name">AI Employee</div>
+        <div class="chat-status"><span style="width:6px;height:6px;border-radius:50%;background:#0FA958;display:inline-block"></span> Online · Ready to assist</div>
+      </div>
+      <button class="chat-close" onclick="closeChat()">✕</button>
+    </div>
+    <div class="chat-msgs" id="chat-msgs"></div>
+    <div class="chat-input-row">
+      <textarea class="chat-input" id="chat-input" rows="1"
+        placeholder="Type your message..."
+        onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendMsg()}"></textarea>
+      <button class="chat-send" onclick="sendMsg()">➤</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── READ URL PARAMS ──
+const p = new URLSearchParams(window.location.search);
+const BIZ   = p.get('biz_name')  || 'Your Business';
+const CITY  = p.get('city')      || 'Your City';
+const IND   = p.get('industry')  || 'Home Services';
+const BOOK  = p.get('booking')   || '#';
+const API_KEY = p.get('api_key') || '';  // Optional: pass Gemini key via URL for demo
+
+// ── FILL DYNAMIC CONTENT ──
+document.getElementById('lbl-industry').textContent  = IND;
+document.getElementById('lbl-city').textContent      = CITY;
+document.getElementById('h-city').textContent        = CITY;
+document.getElementById('sub-biz').textContent       = BIZ;
+document.getElementById('sub-industry').textContent  = IND;
+document.getElementById('sub-city').textContent      = CITY;
+document.getElementById('cta-biz').textContent       = BIZ;
+document.getElementById('chat-agent-name').textContent = BIZ + ' AI Employee';
+document.getElementById('phone-biz-name').textContent  = BIZ;
+document.getElementById('phone-hero-title').textContent = 'Professional ' + IND + ' Services in ' + CITY;
+document.getElementById('booking-biz-name').textContent = BIZ;
+document.getElementById('booking-time').textContent    = 'Today at 2:00 PM · ' + CITY;
+document.getElementById('final-biz').textContent      = BIZ;
+document.getElementById('nav-status').textContent     = BIZ + ' AI · Online';
+document.title = BIZ + ' — AI Employee Demo';
+
+// Fill feat-biz spans
+document.querySelectorAll('.feat-biz').forEach(el => el.textContent = BIZ);
+
+// Book buttons
+document.getElementById('book-btn').onclick = () => window.open(BOOK || '#', '_blank');
+document.getElementById('final-book-btn').onclick = () => window.open(BOOK || '#', '_blank');
+document.getElementById('wa-btn').onclick = () => {
+  const msg = encodeURIComponent('Hi! I saw your AI Employee demo. I\'m interested in learning more about ' + BIZ + '.');
+  window.open('https://wa.me/?text=' + msg, '_blank');
+};
+
+// Industry services for phone mockup
+const SERVICES = {
+  'Plumbing':    [{e:'🔧',t:'Emergency Pipe Repair',s:'Same-day response'},{e:'🚿',t:'Bathroom Fitting',s:'Full installation'},{e:'💧',t:'Leak Detection',s:'No-damage scan'}],
+  'HVAC':        [{e:'❄️',t:'AC Installation',s:'All brands'},{e:'🔥',t:'Heating Repair',s:'Emergency service'},{e:'🌬️',t:'Air Quality',s:'Filter & service'}],
+  'Cleaning':    [{e:'✨',t:'Deep Cleaning',s:'Full property'},{e:'🏠',t:'Regular Maintenance',s:'Weekly plans'},{e:'🪟',t:'Window Cleaning',s:'Inside & out'}],
+  'Carpentry':   [{e:'🪚',t:'Custom Furniture',s:'Made to measure'},{e:'🚪',t:'Door & Frame Fitting',s:'All types'},{e:'🔨',t:'Repairs & Restoration',s:'Fast turnaround'}],
+  'Electrical':  [{e:'⚡',t:'Full Rewiring',s:'Certified work'},{e:'💡',t:'Lighting Install',s:'LED & smart'},{e:'🔌',t:'Fault Finding',s:'Thermal imaging'}],
+  'default':     [{e:'🛠️',t:'Professional Service',s:'Fully certified'},{e:'📋',t:'Free Consultation',s:'No obligation'},{e:'⭐',t:'5-Star Quality',s:'Guaranteed work'}]
+};
+const svcs = SERVICES[IND] || SERVICES['default'];
+const svcContainer = document.getElementById('phone-services');
+svcs.forEach(s => {
+  svcContainer.innerHTML += `
+    <div class="mini-service">
+      <div class="mini-service-icon">${s.e}</div>
+      <div class="mini-service-text">
+        <div class="mini-service-title">${s.t}</div>
+        <div class="mini-service-sub">${s.s}</div>
+      </div>
+    </div>`;
+});
+
+// ── PARTICLES ──
+const pc = document.getElementById('particles');
+for(let i=0;i<12;i++){
+  const d = document.createElement('div');
+  d.className='particle';
+  d.style.cssText=`left:${Math.random()*100}%;animation-delay:${Math.random()*12}s;animation-duration:${10+Math.random()*8}s;width:${2+Math.random()*3}px;height:${2+Math.random()*3}px`;
+  pc.appendChild(d);
+}
+
+// ── GEMINI AI CHAT ──
+const SYSTEM_PROMPT = `You are the AI Sales Employee for ${BIZ}, a professional ${IND} company based in ${CITY}.
+Your job: qualify leads warmly and book appointments.
+Rules:
+- Be professional but friendly and brief (2-3 sentences max per reply)
+- Ask for their name, address in ${CITY}, and problem description
+- When ready to book, say you have slots available and confirm the booking
+- When booking is confirmed, end your message with exactly: [BOOKING_CONFIRMED]
+- Never break character. You ARE the ${BIZ} AI Employee.
+- Booking link: ${BOOK}`;
+
+let chatHistory = [];
+let bookingDone = false;
+
+function openChat(){
+  document.getElementById('chat-modal').classList.add('open');
+  if(chatHistory.length===0){
+    addMsg('ai', `Hello! I'm the ${BIZ} AI Employee. How can I help you with your ${IND.toLowerCase()} needs in ${CITY} today?`);
+  }
+}
+function closeChat(){
+  document.getElementById('chat-modal').classList.remove('open');
+}
+
+function addMsg(role, text){
+  const box = document.getElementById('chat-msgs');
+  const now = new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
+  const div = document.createElement('div');
+  div.className = 'msg ' + role;
+  div.innerHTML = `<div class="bubble">${text.replace('[BOOKING_CONFIRMED]','')}</div>
+    <div class="msg-time">${now}</div>`;
+  box.appendChild(div);
+  box.scrollTop = box.scrollHeight;
+
+  if(text.includes('[BOOKING_CONFIRMED]') && !bookingDone){
+    bookingDone = true;
+    setTimeout(()=>{
+      const successDiv = document.createElement('div');
+      successDiv.className='booking-success';
+      successDiv.innerHTML=`<div class="booking-success-title">✅ Appointment Confirmed!</div>
+        <div class="booking-success-sub">${BIZ} will contact you shortly to confirm the details.</div>`;
+      box.appendChild(successDiv);
+      box.scrollTop=box.scrollHeight;
+      // Show phone overlay too
+      document.getElementById('booking-overlay').classList.add('active');
+      setTimeout(()=>document.getElementById('booking-overlay').classList.remove('active'),4000);
+    },500);
+  }
+}
+
+function showTyping(){
+  const box = document.getElementById('chat-msgs');
+  const t = document.createElement('div');
+  t.id='typing';t.className='msg ai';
+  t.innerHTML='<div class="typing-dots"><span></span><span></span><span></span></div>';
+  box.appendChild(t);box.scrollTop=box.scrollHeight;
+}
+function removeTyping(){
+  const t = document.getElementById('typing');
+  if(t) t.remove();
+}
+
+async function sendMsg(){
+  const input = document.getElementById('chat-input');
+  const text = input.value.trim();
+  if(!text) return;
+  input.value = '';
+  addMsg('user', text);
+  chatHistory.push({role:'user', parts:[{text}]});
+  showTyping();
+
+  // Try Gemini API if key provided, else use smart fallback
+  if(API_KEY){
+    try{
+      const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`,{
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({
+          system_instruction:{parts:[{text:SYSTEM_PROMPT}]},
+          contents:chatHistory
+        })
+      });
+      const data = await res.json();
+      const reply = data.candidates?.[0]?.content?.parts?.[0]?.text || getFallback(text);
+      chatHistory.push({role:'model', parts:[{text:reply}]});
+      removeTyping();
+      addMsg('ai', reply);
+    }catch(e){
+      removeTyping();
+      addMsg('ai', getFallback(text));
+    }
+  } else {
+    // Smart fallback conversation (no API key needed)
+    setTimeout(()=>{
+      removeTyping();
+      addMsg('ai', getFallback(text));
+    }, 1200 + Math.random()*800);
+  }
+}
+
+// Smart fallback responses when no API key
+let fallbackStep = 0;
+function getFallback(userMsg){
+  const msg = userMsg.toLowerCase();
+  if(msg.includes('hi') || msg.includes('hello') || msg.includes('hey')){
+    return `Hi there! I'm the ${BIZ} AI Employee. What ${IND.toLowerCase()} issue can I help you with in ${CITY} today?`;
+  }
+  if(msg.includes('price') || msg.includes('cost') || msg.includes('much')){
+    return `Great question! Our pricing depends on the job size. For an accurate quote, could you describe the issue and your location in ${CITY}? I can book a free assessment for you.`;
+  }
+  if(msg.includes('emergency') || msg.includes('urgent') || msg.includes('burst') || msg.includes('broken')){
+    return `I understand — that sounds urgent! We have emergency slots available today in ${CITY}. Can I get your address and the best number to reach you? I'll confirm your booking right away.`;
+  }
+  if(msg.includes('available') || msg.includes('appointment') || msg.includes('book') || msg.includes('schedule')){
+    return `We have availability today at 2:00 PM and 4:30 PM in ${CITY}. Which works best for you? Once you confirm, I'll lock that slot in for ${BIZ}.`;
+  }
+  if(msg.includes('yes') || msg.includes('confirm') || msg.includes('2pm') || msg.includes('ok') || msg.includes('perfect')){
+    return `Perfect! Your appointment is confirmed with ${BIZ} for today at 2:00 PM in ${CITY}. You'll receive a confirmation message shortly. Is there anything else I can help you with? [BOOKING_CONFIRMED]`;
+  }
+  // Default contextual responses cycling
+  const defaults = [
+    `Thanks for reaching out to ${BIZ}! To help you best, could you describe what you need help with?`,
+    `I can definitely help with that. What's your address in ${CITY} so I can check our nearest available technician?`,
+    `Got it! Based on what you've described, I'd recommend booking a visit. We have slots available as early as today in ${CITY}. Shall I confirm one for you?`,
+    `Excellent! I'm booking that in for you now. Can you confirm your name and the best contact number? [BOOKING_CONFIRMED]`
+  ];
+  return defaults[fallbackStep++ % defaults.length];
+}
+
+// Close modal on backdrop click
+document.getElementById('chat-modal').addEventListener('click', function(e){
+  if(e.target === this) closeChat();
+});
+</script>
+</body>
+</html>
