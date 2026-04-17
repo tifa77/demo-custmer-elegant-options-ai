@@ -17,7 +17,6 @@
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--white);min-height:100vh}
 
-/* BG */
 .bg-blobs{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
 .blob{position:absolute;border-radius:50%;filter:blur(100px);opacity:0.12;animation:drift 20s ease-in-out infinite}
 .b1{width:500px;height:500px;background:#1A6BF0;top:-150px;left:-100px}
@@ -26,7 +25,6 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--white);min-
 
 .page{position:relative;z-index:1;min-height:100vh;display:flex;flex-direction:column}
 
-/* NAV */
 nav{
   display:flex;align-items:center;justify-content:space-between;
   padding:18px 40px;
@@ -46,12 +44,10 @@ nav{
 .nav-link{
   font-size:13px;color:var(--gray);text-decoration:none;
   padding:8px 16px;border-radius:8px;
-  background:rgba(255,255,255,0.05);
-  transition:.2s;
+  background:rgba(255,255,255,0.05);transition:.2s;
 }
 .nav-link:hover{background:rgba(255,255,255,0.1);color:var(--white)}
 
-/* MAIN */
 main{flex:1;padding:48px 40px;max-width:1100px;margin:0 auto;width:100%}
 
 .page-header{margin-bottom:40px}
@@ -63,16 +59,12 @@ main{flex:1;padding:48px 40px;max-width:1100px;margin:0 auto;width:100%}
 
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start}
 
-/* FORM CARD */
 .card{
   background:rgba(255,255,255,0.03);
   border:1px solid var(--border);
   border-radius:20px;padding:28px;
 }
-.card-title{
-  font-family:'Syne',sans-serif;font-size:16px;font-weight:700;
-  margin-bottom:6px;
-}
+.card-title{font-family:'Syne',sans-serif;font-size:16px;font-weight:700;margin-bottom:6px;}
 .card-sub{font-size:12px;color:var(--gray);margin-bottom:24px}
 
 .field{margin-bottom:18px}
@@ -94,33 +86,84 @@ main{flex:1;padding:48px 40px;max-width:1100px;margin:0 auto;width:100%}
 .field input::placeholder,.field textarea::placeholder{color:rgba(255,255,255,0.2)}
 .field select option{background:#1a2035;color:#fff}
 .field textarea{resize:vertical;min-height:70px}
+/* filled fields highlight */
+.field input.filled,.field select.filled{
+  border-color:rgba(15,169,88,0.4);
+  background:rgba(15,169,88,0.05);
+}
 
 .field-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-
 .divider{height:1px;background:var(--border);margin:22px 0}
 
-/* n8n toggle */
-.toggle-section{
+/* Auto-fill box */
+.autofill-wrap{
   background:rgba(26,107,240,0.06);
   border:1px solid rgba(26,107,240,0.2);
-  border-radius:12px;padding:16px;margin-bottom:18px;
+  border-radius:14px;padding:16px;margin-bottom:20px;
 }
-.toggle-header{
-  display:flex;align-items:center;justify-content:space-between;
-  cursor:pointer;
+.autofill-title{
+  font-size:12px;font-weight:600;color:var(--blue2);
+  margin-bottom:10px;display:flex;align-items:center;gap:6px;
 }
-.toggle-header span{font-size:13px;font-weight:500;color:var(--blue2)}
-.toggle-arrow{font-size:12px;color:var(--blue2);transition:.2s}
-.toggle-arrow.open{transform:rotate(180deg)}
-.toggle-body{display:none;margin-top:14px}
-.toggle-body.open{display:block}
-.n8n-status{
-  display:flex;align-items:center;gap:8px;
-  font-size:12px;color:var(--gray);margin-top:12px;
+.autofill-input-row{display:flex;gap:8px;align-items:stretch}
+.autofill-input-row input{
+  flex:1;background:rgba(255,255,255,0.07);
+  border:1px solid rgba(26,107,240,0.25);
+  border-radius:10px;padding:10px 13px;
+  color:var(--white);font-size:13px;font-family:'Inter',sans-serif;
+  outline:none;transition:.2s;
 }
-.n8n-dot{width:7px;height:7px;border-radius:50%;background:var(--gray);flex-shrink:0}
-.n8n-dot.active{background:var(--green);animation:pulse-dot 2s infinite}
-@keyframes pulse-dot{0%,100%{box-shadow:0 0 0 0 rgba(15,169,88,0.4)}50%{box-shadow:0 0 0 5px rgba(15,169,88,0)}}
+.autofill-input-row input:focus{border-color:var(--blue2);}
+.autofill-input-row input::placeholder{color:rgba(255,255,255,0.2)}
+
+.btn-autofill{
+  background:linear-gradient(135deg,var(--blue),var(--blue2));
+  color:#fff;border:none;border-radius:10px;
+  padding:0 16px;font-size:12px;font-weight:700;
+  cursor:pointer;transition:.2s;white-space:nowrap;
+  font-family:'Inter',sans-serif;display:flex;align-items:center;gap:6px;
+  min-width:100px;justify-content:center;
+}
+.btn-autofill:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(26,107,240,0.4)}
+.btn-autofill:disabled{opacity:0.5;cursor:not-allowed;transform:none}
+
+/* Status badge */
+.maps-status{
+  display:none;margin-top:10px;font-size:11px;
+  padding:8px 12px;border-radius:8px;line-height:1.5;
+}
+.maps-status.success{
+  background:rgba(15,169,88,0.1);color:#4ADE80;
+  border:1px solid rgba(15,169,88,0.3);display:block;
+}
+.maps-status.error{
+  background:rgba(224,57,57,0.1);color:#F87171;
+  border:1px solid rgba(224,57,57,0.3);display:block;
+}
+.maps-status.loading{
+  background:rgba(26,107,240,0.1);color:var(--blue2);
+  border:1px solid rgba(26,107,240,0.3);display:flex;align-items:center;gap:8px;
+}
+.maps-status.warning{
+  background:rgba(245,185,66,0.1);color:var(--gold2);
+  border:1px solid rgba(245,185,66,0.3);display:block;
+}
+
+/* Fetched data preview strip */
+.fetched-strip{
+  display:none;margin-top:12px;
+  background:rgba(15,169,88,0.06);
+  border:1px solid rgba(15,169,88,0.2);
+  border-radius:10px;padding:12px 14px;
+}
+.fetched-strip.show{display:block}
+.fetched-strip-title{
+  font-size:10px;font-weight:600;letter-spacing:0.1em;
+  color:var(--green);text-transform:uppercase;margin-bottom:8px;
+}
+.fetched-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.fetched-item{font-size:11px;color:var(--gray2)}
+.fetched-item strong{color:var(--white);font-weight:500}
 
 /* BTNs */
 .btn-primary{
@@ -161,8 +204,7 @@ main{flex:1;padding:48px 40px;max-width:1100px;margin:0 auto;width:100%}
   background:rgba(0,0,0,0.3);border:1px solid rgba(255,255,255,0.08);
   border-radius:10px;padding:12px 14px;
   font-size:12px;color:var(--gray2);
-  word-break:break-all;line-height:1.6;
-  font-family:monospace;
+  word-break:break-all;line-height:1.6;font-family:monospace;
 }
 .output-btns{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap}
 .btn-copy,.btn-open,.btn-preview{
@@ -178,11 +220,7 @@ main{flex:1;padding:48px 40px;max-width:1100px;margin:0 auto;width:100%}
 .btn-preview{background:rgba(201,146,42,0.15);color:var(--gold2);border:1px solid rgba(201,146,42,0.3)}
 .btn-preview:hover{background:rgba(201,146,42,0.25)}
 
-/* PREVIEW IFRAME */
-.preview-wrap{
-  display:none;margin-top:16px;
-  border:1px solid var(--border);border-radius:16px;overflow:hidden;
-}
+.preview-wrap{display:none;margin-top:16px;border:1px solid var(--border);border-radius:16px;overflow:hidden}
 .preview-wrap.visible{display:block}
 .preview-bar{
   background:var(--bg2);padding:10px 16px;
@@ -193,7 +231,6 @@ main{flex:1;padding:48px 40px;max-width:1100px;margin:0 auto;width:100%}
 .preview-close{background:none;border:none;color:var(--gray);cursor:pointer;font-size:16px}
 .preview-iframe{width:100%;height:500px;border:none;display:block}
 
-/* N8N STATUS CARD */
 .n8n-result{
   display:none;
   background:rgba(201,146,42,0.06);
@@ -204,7 +241,6 @@ main{flex:1;padding:48px 40px;max-width:1100px;margin:0 auto;width:100%}
 .n8n-result-title{font-size:12px;font-weight:600;color:var(--gold2);margin-bottom:6px}
 .n8n-result-text{font-size:11px;color:var(--gray);line-height:1.6}
 
-/* HISTORY */
 .history-card{margin-top:24px}
 .history-item{
   display:flex;align-items:center;justify-content:space-between;
@@ -214,14 +250,10 @@ main{flex:1;padding:48px 40px;max-width:1100px;margin:0 auto;width:100%}
 .history-biz{font-size:13px;font-weight:500;color:var(--white)}
 .history-meta{font-size:11px;color:var(--gray);margin-top:3px}
 .history-actions{display:flex;gap:8px}
-.history-btn{
-  font-size:11px;padding:5px 12px;border-radius:6px;
-  cursor:pointer;border:none;transition:.2s;
-}
+.history-btn{font-size:11px;padding:5px 12px;border-radius:6px;cursor:pointer;border:none;transition:.2s}
 .hb-copy{background:rgba(26,107,240,0.12);color:var(--blue2)}
 .hb-open{background:rgba(15,169,88,0.12);color:#4ADE80}
 
-/* TOAST */
 .toast{
   position:fixed;bottom:24px;right:24px;z-index:999;
   background:#1a2035;border:1px solid rgba(255,255,255,0.1);
@@ -236,7 +268,6 @@ main{flex:1;padding:48px 40px;max-width:1100px;margin:0 auto;width:100%}
 .toast.success{border-color:rgba(15,169,88,0.4);background:rgba(15,169,88,0.1)}
 .toast.error{border-color:rgba(224,57,57,0.4);background:rgba(224,57,57,0.1)}
 
-/* LOADING SPINNER */
 .spinner{
   width:16px;height:16px;border:2px solid rgba(255,255,255,0.3);
   border-top-color:#fff;border-radius:50%;
@@ -244,6 +275,12 @@ main{flex:1;padding:48px 40px;max-width:1100px;margin:0 auto;width:100%}
 }
 .spinner.show{display:block}
 @keyframes spin{to{transform:rotate(360deg)}}
+
+.spin-sm{
+  width:12px;height:12px;border:2px solid rgba(255,255,255,0.2);
+  border-top-color:var(--blue2);border-radius:50%;
+  animation:spin .7s linear infinite;
+}
 
 @media(max-width:768px){
   .grid{grid-template-columns:1fr}
@@ -264,7 +301,7 @@ main{flex:1;padding:48px 40px;max-width:1100px;margin:0 auto;width:100%}
   <div class="logo">Elegant Options <span>AI</span></div>
   <div class="nav-right">
     <span class="admin-badge">⚙ ADMIN PANEL</span>
-    <a href="demo.html" class="nav-link" target="_blank">View Demo ↗</a>
+    <a href="demo_v2.html" class="nav-link" target="_blank">View Demo ↗</a>
   </div>
 </nav>
 
@@ -280,7 +317,32 @@ main{flex:1;padding:48px 40px;max-width:1100px;margin:0 auto;width:100%}
     <div>
       <div class="card">
         <div class="card-title">📋 Prospect Information</div>
-        <div class="card-sub">All fields marked * are required to generate the link.</div>
+        <div class="card-sub">الصق رابط Google Maps وسيتم جلب جميع البيانات تلقائياً.</div>
+
+        <!-- AUTO-FILL BOX -->
+        <div class="autofill-wrap">
+          <div class="autofill-title">
+            🔍 Google Maps Auto-Fill
+          </div>
+          <div class="autofill-input-row">
+            <input type="url" id="maps_url"
+              placeholder="https://maps.app.goo.gl/... أو الرابط الكامل"
+              onpaste="setTimeout(()=>autoTryFetch(this.value),100)"
+              oninput="onMapsUrlInput(this.value)"
+            />
+            <button class="btn-autofill" id="fetch-btn" onclick="fetchFromMaps()">
+              <span id="fetch-btn-icon">✨</span>
+              <span id="fetch-btn-text">Auto-fill</span>
+            </button>
+          </div>
+          <div class="maps-status" id="maps-status"></div>
+
+          <!-- Fetched data preview -->
+          <div class="fetched-strip" id="fetched-strip">
+            <div class="fetched-strip-title">✅ تم جلب البيانات من Google Places</div>
+            <div class="fetched-grid" id="fetched-grid"></div>
+          </div>
+        </div>
 
         <div class="field">
           <label>Business Name <span>*</span></label>
@@ -299,7 +361,11 @@ main{flex:1;padding:48px 40px;max-width:1100px;margin:0 auto;width:100%}
               <option value="Electrical">⚡ Electrical</option>
               <option value="Painting">🎨 Painting</option>
               <option value="Landscaping">🌿 Landscaping</option>
+              <option value="Roofing">🏠 Roofing</option>
               <option value="Printing">🖨️ Printing</option>
+              <option value="Restaurant">🍽️ Restaurant</option>
+              <option value="Salon">💇 Salon</option>
+              <option value="Clinic">🏥 Clinic</option>
               <option value="Other">🛠️ Other</option>
             </select>
           </div>
@@ -311,19 +377,25 @@ main{flex:1;padding:48px 40px;max-width:1100px;margin:0 auto;width:100%}
 
         <div class="field">
           <label>Phone Number</label>
-          <input type="text" id="phone" placeholder="+965 XXXX XXXX" />
+          <div style="position:relative">
+            <input type="text" id="phone" placeholder="+965 XXXX XXXX" />
+            <span id="phone-country" style="
+              position:absolute;right:12px;top:50%;transform:translateY(-50%);
+              font-size:11px;color:var(--gray);pointer-events:none;
+            "></span>
+          </div>
         </div>
 
         <div class="field">
-          <label>Calendar / Booking Link <span>*</span></label>
-          <input type="url" id="booking" placeholder="https://cal.com/..." />
+          <label>Website</label>
+          <input type="text" id="website" placeholder="https://..." />
         </div>
 
         <div class="field">
-          <label>Prospect's Current Website</label>
-          <input type="url" id="website" placeholder="https://their-old-site.com" />
-          <div style="font-size:11px;color:var(--gray);margin-top:5px">
-            Used by n8n to analyze their services automatically
+          <label>Email (optional)</label>
+          <input type="email" id="email" placeholder="info@business.com" />
+          <div style="font-size:10px;color:var(--gray);margin-top:4px">
+            💡 Google Places لا يوفر الإيميل — أدخله يدوياً إذا كان متاحاً
           </div>
         </div>
 
@@ -334,43 +406,27 @@ main{flex:1;padding:48px 40px;max-width:1100px;margin:0 auto;width:100%}
 
         <div class="divider"></div>
 
-        <!-- n8n SECTION -->
-        <div class="toggle-section">
-          <div class="toggle-header" onclick="toggleN8n()">
-            <span>⚡ Send via n8n Automation</span>
-            <span class="toggle-arrow" id="n8n-arrow">▼</span>
-          </div>
-          <div class="toggle-body" id="n8n-body">
-            <div class="field" style="margin-bottom:12px;margin-top:4px">
-              <label>n8n Webhook URL</label>
-              <input type="url" id="n8n_webhook"
-                placeholder="https://your-n8n.app.n8n.cloud/webhook/..." />
-            </div>
-            <div class="n8n-status">
-              <span class="n8n-dot" id="n8n-dot"></span>
-              <span id="n8n-status-text">Enter webhook URL to connect</span>
-            </div>
-          </div>
+        <button class="btn-n8n" id="n8n-btn" onclick="sendToN8n()" style="margin-top:0">
+          <span class="spinner" id="spinner2"></span>
+          <span id="btn2-text">⚡ إنشاء وإرسال الديمو تلقائياً</span>
+        </button>
+        <div style="font-size:11px;color:var(--gray);text-align:center;margin-top:8px;line-height:1.6">
+          سيقوم n8n بـ: جلب بيانات Google Places → توليد محتوى AI → إنشاء Contact في GHL → بناء رابط الديمو
         </div>
 
-        <!-- BUTTONS -->
-        <button class="btn-primary" onclick="generateLink()">
-          <span class="spinner" id="spinner1"></span>
-          <span id="btn1-text">🚀 GENERATE DEMO LINK</span>
-        </button>
+        <div style="height:1px;background:var(--border);margin:16px 0"></div>
 
-        <button class="btn-n8n" id="n8n-btn" onclick="sendToN8n()" disabled>
-          <span class="spinner" id="spinner2"></span>
-          <span id="btn2-text">⚡ SEND VIA n8n (Auto-Analyze + Deliver)</span>
+        <button class="btn-primary" onclick="generateLink()" style="background:rgba(255,255,255,0.06);box-shadow:none;border:1px solid var(--border)">
+          <span class="spinner" id="spinner1"></span>
+          <span id="btn1-text">🔗 Generate Quick Link (بدون n8n)</span>
         </button>
+        <div style="font-size:11px;color:var(--gray);text-align:center;margin-top:6px">للاختبار السريع فقط — بدون GHL أو AI</div>
 
       </div>
     </div>
 
     <!-- RIGHT: OUTPUT -->
     <div>
-
-      <!-- OUTPUT -->
       <div class="output-section" id="output-section">
         <div class="output-card">
           <div class="output-label">✅ Demo Link Generated</div>
@@ -382,7 +438,6 @@ main{flex:1;padding:48px 40px;max-width:1100px;margin:0 auto;width:100%}
           </div>
         </div>
 
-        <!-- WhatsApp quick send -->
         <div class="output-card" style="background:rgba(37,211,102,0.05);border-color:rgba(37,211,102,0.2)">
           <div class="output-label" style="color:#4ADE80">📲 Quick Send</div>
           <div style="display:flex;gap:10px;flex-wrap:wrap">
@@ -395,13 +450,11 @@ main{flex:1;padding:48px 40px;max-width:1100px;margin:0 auto;width:100%}
           </div>
         </div>
 
-        <!-- n8n result -->
         <div class="n8n-result" id="n8n-result">
           <div class="n8n-result-title">⚡ n8n Workflow Triggered</div>
           <div class="n8n-result-text" id="n8n-result-text"></div>
         </div>
 
-        <!-- Preview -->
         <div class="preview-wrap" id="preview-wrap">
           <div class="preview-bar">
             <span id="preview-url-label">Preview</span>
@@ -411,19 +464,18 @@ main{flex:1;padding:48px 40px;max-width:1100px;margin:0 auto;width:100%}
         </div>
       </div>
 
-      <!-- PLACEHOLDER when no output yet -->
       <div id="output-placeholder" class="card" style="text-align:center;padding:48px 24px">
         <div style="font-size:48px;margin-bottom:16px">🎯</div>
         <div style="font-family:'Syne',sans-serif;font-size:16px;font-weight:700;margin-bottom:8px">
           Ready to Deploy
         </div>
         <div style="font-size:13px;color:var(--gray);line-height:1.6">
-          Fill in the prospect's details and click<br>"Generate Demo Link" to create their personalized AI Employee demo.
+          الصق رابط Google Maps وسيتم ملء جميع الحقول<br>
+          تلقائياً في ثوانٍ — ثم اضغط إرسال.
         </div>
       </div>
 
-      <!-- HISTORY -->
-      <div class="card history-card" id="history-card" style="display:none;margin-top:0">
+      <div class="card history-card" id="history-card" style="display:none;margin-top:24px">
         <div class="card-title" style="margin-bottom:16px">🕐 Recent Links</div>
         <div id="history-list"></div>
         <button onclick="clearHistory()"
@@ -431,53 +483,344 @@ main{flex:1;padding:48px 40px;max-width:1100px;margin:0 auto;width:100%}
           Clear history
         </button>
       </div>
-
     </div>
+
   </div>
 </main>
 </div>
 
-<!-- TOAST -->
 <div class="toast" id="toast"></div>
 
 <script>
-const BASE = 'https://tifa77.github.io/demo-custmer-elegant-options-ai/demo.html';
-let currentURL = '';
+// ═══════════════════════════════════════════════════
+//  CONFIG
+// ═══════════════════════════════════════════════════
+const BASE              = 'https://tifa77.github.io/demo-custmer-elegant-options-ai/demo_v2.html';
+const N8N_WEBHOOK       = 'https://n8n.elegant-options.com/webhook/elegant-options-demo';
+const N8N_PLACES_LOOKUP = 'https://n8n.elegant-options.com/webhook/places-lookup';
+
+let currentURL  = '';
 let currentData = {};
 
-// ── N8N TOGGLE ──
-function toggleN8n(){
-  const body = document.getElementById('n8n-body');
-  const arrow = document.getElementById('n8n-arrow');
-  body.classList.toggle('open');
-  arrow.classList.toggle('open');
+// ═══════════════════════════════════════════════════
+//  GOOGLE PLACES AUTO-FILL — via n8n proxy
+// ═══════════════════════════════════════════════════
+
+function onMapsUrlInput(val){ /* passive */ }
+function autoTryFetch(val){ if(val && val.length > 20) fetchFromMaps(); }
+
+async function fetchFromMaps(){
+  const url = document.getElementById('maps_url').value.trim();
+  if(!url){ showToast('⚠ أدخل رابط Google Maps أولاً','error'); return; }
+
+  setFetchBtn(true);
+  showStatus('loading','⏳ جاري استخراج البيانات من الرابط...');
+
+  const fetched = [];
+
+  // ── 1. استخراج اسم النشاط من الرابط ──
+  let bizName = '';
+  const nameMatch = url.match(/\/maps\/place\/([^/@?]+)/);
+  if(nameMatch){
+    bizName = decodeURIComponent(nameMatch[1]).replace(/\+/g,' ').trim();
+    document.getElementById('biz_name').value = bizName;
+    document.getElementById('biz_name').classList.add('filled');
+    fetched.push({label:'الاسم', val: bizName});
+  }
+
+  // ── 2. استخراج المدينة / المنطقة ──
+  // محاولة 1: من address components في الرابط
+  let city = '';
+  const addrMatch = url.match(/\/maps\/place\/[^/]+\/([^/@]+)/);
+  if(addrMatch){
+    const addrParts = decodeURIComponent(addrMatch[1]).replace(/\+/g,' ').split(',').map(s=>s.trim());
+    // المدينة عادة ثاني أو ثالث عنصر
+    if(addrParts.length >= 2){
+      city = addrParts[addrParts.length - 2] || addrParts[addrParts.length - 1];
+    }
+  }
+  // محاولة 2: من الإحداثيات — تخمين المنطقة من الدولة
+  if(!city){
+    const coordMatch = url.match(/@(-?\d+\.\d+),(-?\d+\.\d+)/);
+    if(coordMatch){
+      const lat = parseFloat(coordMatch[1]);
+      const lng = parseFloat(coordMatch[2]);
+      // تخمين الدولة/المنطقة من الإحداثيات
+      if(lat>28.5 && lat<30.5 && lng>46.5 && lng<49) city = 'Kuwait';
+      else if(lat>23 && lat<28 && lng>34 && lng<56) city = 'Saudi Arabia';
+      else if(lat>22 && lat<26.5 && lng>51 && lng<57) city = 'UAE';
+      else if(lat>50 && lat<59 && lng>-8 && lng<2) city = 'London';
+      else if(lat>29 && lat<31.5 && lng>29 && lng<35) city = 'Egypt';
+    }
+  }
+  // محاولة 3: من عنوان الرابط نفسه
+  if(!city){
+    const parts = url.split('/');
+    for(const part of parts){
+      const decoded = decodeURIComponent(part).replace(/\+/g,' ');
+      const cityPatterns = ['London','Kuwait','Dubai','Riyadh','Jeddah','Doha','Bahrain','Muscat','Cairo'];
+      for(const cp of cityPatterns){
+        if(decoded.toLowerCase().includes(cp.toLowerCase())){
+          city = cp;
+          break;
+        }
+      }
+      if(city) break;
+    }
+  }
+  if(city){
+    document.getElementById('city').value = city;
+    document.getElementById('city').classList.add('filled');
+    fetched.push({label:'المدينة', val: city});
+  }
+
+  // ── 3. محاولة n8n Places Lookup (إذا متاح) ──
+  try {
+    const res = await fetch(N8N_PLACES_LOOKUP, {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({ maps_url: url })
+    });
+    if(res.ok){
+      const data = await res.json();
+      if(!data.error){
+        // ملء الحقول الإضافية من n8n
+        if(data.name && !bizName){
+          document.getElementById('biz_name').value = data.name;
+          document.getElementById('biz_name').classList.add('filled');
+          fetched.push({label:'الاسم', val: data.name});
+        }
+        if(data.phone){
+          document.getElementById('phone').value = data.phone;
+          document.getElementById('phone').classList.add('filled');
+          document.getElementById('phone-country').textContent = getCountryFlag(data.phone);
+          fetched.push({label:'الهاتف', val: data.phone});
+        }
+        if(data.website){
+          document.getElementById('website').value = data.website;
+          document.getElementById('website').classList.add('filled');
+          fetched.push({label:'الموقع', val: data.website.replace(/^https?:\/\//,'').split('/')[0]});
+        }
+        if(data.city && !city){
+          document.getElementById('city').value = data.city;
+          document.getElementById('city').classList.add('filled');
+          fetched.push({label:'المدينة', val: data.city});
+        }
+        if(data.rating) fetched.push({label:'التقييم', val: '⭐ ' + data.rating + ' (' + (data.reviews||'?') + ' تقييم)'});
+        if(data.industry){
+          const sel = document.getElementById('industry');
+          for(let i=0;i<sel.options.length;i++){
+            if(sel.options[i].value === data.industry){ sel.selectedIndex = i; sel.classList.add('filled'); break; }
+          }
+          fetched.push({label:'الصناعة', val: data.industry});
+        }
+      }
+    }
+  } catch(e){
+    // n8n غير متاح — لا مشكلة، الاستخراج من الرابط كافٍ
+    console.log('n8n Places Lookup not available, using URL parsing only');
+  }
+
+  // ── 4. عرض النتائج ──
+  if(fetched.length > 0){
+    showFetchedStrip(fetched);
+    showStatus('success', '✅ تم استخراج ' + fetched.length + ' حقل — أكمل الباقي يدوياً إذا لزم الأمر');
+    showToast('✅ تم ملء ' + fetched.length + ' حقول!', 'success');
+  } else {
+    showStatus('warning', '⚠️ تعذّر استخراج البيانات — جرب نسخ الرابط الكامل من المتصفح');
+  }
+
+  setFetchBtn(false);
 }
 
-// Watch webhook input
-document.getElementById('n8n_webhook').addEventListener('input', function(){
-  const btn = document.getElementById('n8n-btn');
-  const dot = document.getElementById('n8n-dot');
-  const status = document.getElementById('n8n-status-text');
-  if(this.value.startsWith('http')){
-    btn.disabled = false;
-    dot.classList.add('active');
-    status.textContent = 'Webhook connected — ready to send';
-  } else {
-    btn.disabled = true;
-    dot.classList.remove('active');
-    status.textContent = 'Enter webhook URL to connect';
-  }
-});
+function getCountryFlag(phone){
+  if(phone.startsWith('+965')) return '🇰🇼 Kuwait';
+  if(phone.startsWith('+966')) return '🇸🇦 Saudi';
+  if(phone.startsWith('+971')) return '🇦🇪 UAE';
+  if(phone.startsWith('+974')) return '🇶🇦 Qatar';
+  if(phone.startsWith('+973')) return '🇧🇭 Bahrain';
+  if(phone.startsWith('+968')) return '🇴🇲 Oman';
+  if(phone.startsWith('+44'))  return '🇬🇧 UK';
+  if(phone.startsWith('+1'))   return '🇺🇸 USA';
+  if(phone.startsWith('+20'))  return '🇪🇬 Egypt';
+  return '';
+}
 
-// ── GENERATE LINK ──
+// ── ملء الحقول من بيانات Places ──
+function fillFields(place){
+  const fetched = [];
+
+  // 1. اسم النشاط
+  if(place.name){
+    setField('biz_name', place.name);
+    fetched.push({label:'الاسم', val: place.name});
+  }
+
+  // 2. الهاتف — مع كود الدولة
+  const phone = place.international_phone_number || place.formatted_phone_number || '';
+  if(phone){
+    setField('phone', phone);
+    const country = detectCountry(phone, place.address_components);
+    const countryEl = document.getElementById('phone-country');
+    if(countryEl) countryEl.textContent = country;
+    fetched.push({label:'الهاتف', val: phone});
+  }
+
+  // 3. الموقع الإلكتروني
+  if(place.website){
+    let site = place.website;
+    setField('website', site);
+    fetched.push({label:'الموقع', val: site.replace(/^https?:\/\//,'').split('/')[0]});
+  }
+
+  // 4. المدينة والمنطقة
+  let city = '';
+  let country_name = '';
+  if(place.address_components){
+    for(const comp of place.address_components){
+      if(comp.types.includes('locality') || comp.types.includes('administrative_area_level_1')){
+        if(!city) city = comp.long_name;
+      }
+      if(comp.types.includes('country')){
+        country_name = comp.long_name;
+      }
+    }
+  }
+  if(!city && place.vicinity){
+    // استخراج المدينة من vicinity
+    const parts = place.vicinity.split(',');
+    city = parts[parts.length-1].trim();
+  }
+  if(city){
+    setField('city', city);
+    fetched.push({label:'المدينة', val: city + (country_name ? ` · ${country_name}` : '')});
+  }
+
+  // 5. التقييم
+  if(place.rating){
+    fetched.push({label:'التقييم', val: `⭐ ${place.rating} (${place.user_ratings_total || '?'} تقييم)`});
+  }
+
+  // 6. تخمين الصناعة من types
+  const industry = guessIndustry(place.types || []);
+  if(industry){
+    const sel = document.getElementById('industry');
+    // ابحث عن option مطابق
+    for(let i=0;i<sel.options.length;i++){
+      if(sel.options[i].value === industry){
+        sel.selectedIndex = i;
+        sel.classList.add('filled');
+        break;
+      }
+    }
+    fetched.push({label:'الصناعة (تخمين)', val: industry});
+  }
+
+  // 7. عرض الـ strip
+  showFetchedStrip(fetched);
+
+  // Status success
+  showStatus('success', `✅ تم جلب ${fetched.length} حقل من Google Places بنجاح`);
+  showToast(`✅ تم ملء ${fetched.length} حقول تلقائياً!`, 'success');
+}
+
+function setField(id, val){
+  const el = document.getElementById(id);
+  if(el){
+    el.value = val;
+    el.classList.add('filled');
+  }
+}
+
+function detectCountry(phone, components){
+  // استخراج كود الدولة من رقم الهاتف الدولي
+  if(phone.startsWith('+965')) return '🇰🇼 Kuwait';
+  if(phone.startsWith('+966')) return '🇸🇦 Saudi Arabia';
+  if(phone.startsWith('+971')) return '🇦🇪 UAE';
+  if(phone.startsWith('+974')) return '🇶🇦 Qatar';
+  if(phone.startsWith('+973')) return '🇧🇭 Bahrain';
+  if(phone.startsWith('+968')) return '🇴🇲 Oman';
+  if(phone.startsWith('+44'))  return '🇬🇧 UK';
+  if(phone.startsWith('+1'))   return '🇺🇸 USA/Canada';
+  if(phone.startsWith('+20'))  return '🇪🇬 Egypt';
+  if(phone.startsWith('+962')) return '🇯🇴 Jordan';
+  if(phone.startsWith('+961')) return '🇱🇧 Lebanon';
+  if(components){
+    for(const c of components){
+      if(c.types.includes('country')) return c.long_name;
+    }
+  }
+  return '';
+}
+
+function guessIndustry(types){
+  const map = {
+    'plumber':'Plumbing', 'plumbing':'Plumbing',
+    'electrician':'Electrical', 'electrical':'Electrical',
+    'painter':'Painting', 'painting':'Painting',
+    'roofing_contractor':'Roofing',
+    'general_contractor':'Other',
+    'cleaning_service':'Cleaning','laundry':'Cleaning',
+    'landscaper':'Landscaping','landscaping':'Landscaping',
+    'restaurant':'Restaurant','food':'Restaurant','cafe':'Restaurant',
+    'beauty_salon':'Salon','hair_care':'Salon','spa':'Salon',
+    'doctor':'Clinic','dentist':'Clinic','health':'Clinic',
+    'hvac':'HVAC', 'air_conditioning':'HVAC',
+    'carpenter':'Carpentry','furniture_store':'Carpentry',
+  };
+  for(const t of types){
+    const lower = t.toLowerCase();
+    for(const [key, val] of Object.entries(map)){
+      if(lower.includes(key)) return val;
+    }
+  }
+  return null;
+}
+
+function showFetchedStrip(items){
+  const strip = document.getElementById('fetched-strip');
+  const grid  = document.getElementById('fetched-grid');
+  if(!items.length){ strip.classList.remove('show'); return; }
+  grid.innerHTML = items.map(i=>
+    `<div class="fetched-item"><span style="color:var(--gray)">${i.label}:</span> <strong>${i.val}</strong></div>`
+  ).join('');
+  strip.classList.add('show');
+}
+
+function showStatus(type, msg){
+  const el = document.getElementById('maps-status');
+  el.className = `maps-status ${type}`;
+  if(type === 'loading'){
+    el.innerHTML = `<div class="spin-sm"></div> ${msg}`;
+  } else {
+    el.innerHTML = msg;
+  }
+}
+
+function setFetchBtn(loading){
+  const btn  = document.getElementById('fetch-btn');
+  const icon = document.getElementById('fetch-btn-icon');
+  const text = document.getElementById('fetch-btn-text');
+  btn.disabled = loading;
+  if(loading){
+    icon.innerHTML = '<div class="spin-sm" style="border-top-color:#fff"></div>';
+    text.textContent = 'جاري...';
+  } else {
+    icon.textContent = '✨';
+    text.textContent = 'Auto-fill';
+  }
+}
+
+// ═══════════════════════════════════════════════════
+//  GENERATE LINK
+// ═══════════════════════════════════════════════════
 function generateLink(){
-  const biz     = document.getElementById('biz_name').value.trim();
-  const industry= document.getElementById('industry').value;
-  const city    = document.getElementById('city').value.trim();
-  const booking = document.getElementById('booking').value.trim();
-  const phone   = document.getElementById('phone').value.trim();
-  const website = document.getElementById('website').value.trim();
-  const notes   = document.getElementById('notes').value.trim();
+  const biz      = document.getElementById('biz_name').value.trim();
+  const industry = document.getElementById('industry').value;
+  const city     = document.getElementById('city').value.trim();
+  const phone    = document.getElementById('phone').value.trim();
+  const website  = document.getElementById('website').value.trim();
+  const maps_url = document.getElementById('maps_url').value.trim();
 
   if(!biz || !industry || !city){
     showToast('⚠ Please fill in Business Name, Industry, and City.','error');
@@ -490,13 +833,11 @@ function generateLink(){
     params.set('biz_name', biz);
     params.set('industry', industry);
     params.set('city', city);
-    if(booking) params.set('booking', booking);
     if(phone)   params.set('phone', phone);
     if(website) params.set('website', website);
-    if(notes)   params.set('notes', notes);
 
-    currentURL = BASE + '?' + params.toString();
-    currentData = {biz, industry, city, booking, phone, website};
+    currentURL  = BASE + '?' + params.toString();
+    currentData = {biz, industry, city, phone, maps_url, website};
 
     document.getElementById('generated-url').textContent = currentURL;
     document.getElementById('output-section').classList.add('visible');
@@ -509,23 +850,25 @@ function generateLink(){
   }, 600);
 }
 
-// ── SEND TO N8N ──
+// ═══════════════════════════════════════════════════
+//  SEND TO N8N
+// ═══════════════════════════════════════════════════
 async function sendToN8n(){
-  const webhookURL = document.getElementById('n8n_webhook').value.trim();
-  const biz     = document.getElementById('biz_name').value.trim();
-  const industry= document.getElementById('industry').value;
-  const city    = document.getElementById('city').value.trim();
-  const booking = document.getElementById('booking').value.trim();
-  const phone   = document.getElementById('phone').value.trim();
-  const website = document.getElementById('website').value.trim();
-  const notes   = document.getElementById('notes').value.trim();
+  const biz      = document.getElementById('biz_name').value.trim();
+  const industry = document.getElementById('industry').value;
+  const city     = document.getElementById('city').value.trim();
+  const phone    = document.getElementById('phone').value.trim();
+  const website  = document.getElementById('website').value.trim();
+  const email    = document.getElementById('email').value.trim();
+  const maps_url = document.getElementById('maps_url').value.trim();
+  const notes    = document.getElementById('notes').value.trim();
 
   if(!biz||!industry||!city){
     showToast('⚠ Please fill required fields first.','error');
     return;
   }
-  if(!webhookURL){
-    showToast('⚠ Please enter your n8n webhook URL.','error');
+  if(!maps_url){
+    showToast('⚠ Please enter the Google Maps URL.','error');
     return;
   }
 
@@ -535,16 +878,16 @@ async function sendToN8n(){
     biz_name: biz,
     industry: industry,
     city: city,
-    booking_link: booking,
+    maps_url: maps_url,
     phone: phone,
-    website_url: website,
+    website: website,
+    email: email,
     notes: notes,
-    base_demo_url: BASE,
     timestamp: new Date().toISOString()
   };
 
   try {
-    const res = await fetch(webhookURL, {
+    const res = await fetch(N8N_WEBHOOK, {
       method: 'POST',
       headers: {'Content-Type':'application/json'},
       body: JSON.stringify(payload)
@@ -553,43 +896,48 @@ async function sendToN8n(){
     const result = await res.json().catch(()=>({status:'triggered'}));
     setLoading(2, false);
 
-    const resultEl = document.getElementById('n8n-result');
+    const resultEl   = document.getElementById('n8n-result');
     const resultText = document.getElementById('n8n-result-text');
     resultEl.classList.add('visible');
     resultText.innerHTML = `
       ✅ Workflow triggered for <strong>${biz}</strong><br>
-      n8n is now: scraping ${website||'(no website)'} → analyzing with Gemini → building link → sending to client.<br>
+      n8n is now: fetching Google Places data → generating AI content → creating GHL contact → building demo link.<br>
       <span style="color:var(--gray);font-size:10px">Sent at ${new Date().toLocaleTimeString()}</span>
     `;
     showToast('⚡ n8n workflow triggered!','success');
 
+    if(result.demo_url){
+      currentURL  = result.demo_url;
+      currentData = {biz, industry, city, phone, maps_url};
+      document.getElementById('generated-url').textContent = currentURL;
+      document.getElementById('output-section').classList.add('visible');
+      document.getElementById('output-placeholder').style.display = 'none';
+      saveToHistory(biz, industry, city, currentURL);
+      renderHistory();
+    }
+
   } catch(err){
     setLoading(2, false);
-    // CORS fallback — n8n still receives the request
-    const resultEl = document.getElementById('n8n-result');
+    const resultEl   = document.getElementById('n8n-result');
     const resultText = document.getElementById('n8n-result-text');
     resultEl.classList.add('visible');
     resultText.innerHTML = `
       ✅ Data sent to n8n for <strong>${biz}</strong><br>
       Workflow is processing in the background.<br>
-      <span style="color:var(--gray);font-size:10px">Note: CORS response blocked by browser — but n8n received the data.</span>
+      <span style="color:var(--gray);font-size:10px">Note: CORS response — but n8n received the data.</span>
     `;
     showToast('⚡ Sent to n8n!','success');
   }
 }
 
-// ── COPY / OPEN / PREVIEW ──
-function copyLink(){
-  navigator.clipboard.writeText(currentURL);
-  showToast('📋 Link copied to clipboard!','success');
-}
-
-function openLink(){
-  window.open(currentURL,'_blank');
-}
+// ═══════════════════════════════════════════════════
+//  COPY / OPEN / PREVIEW / WHATSAPP
+// ═══════════════════════════════════════════════════
+function copyLink(){ navigator.clipboard.writeText(currentURL); showToast('📋 Link copied!','success'); }
+function openLink(){ window.open(currentURL,'_blank'); }
 
 function togglePreview(){
-  const wrap = document.getElementById('preview-wrap');
+  const wrap   = document.getElementById('preview-wrap');
   const iframe = document.getElementById('preview-iframe');
   if(wrap.classList.contains('visible')){
     wrap.classList.remove('visible');
@@ -600,7 +948,6 @@ function togglePreview(){
     document.getElementById('preview-url-label').textContent = currentData.biz + ' · Live Preview';
   }
 }
-
 function closePreview(){
   document.getElementById('preview-wrap').classList.remove('visible');
   document.getElementById('preview-iframe').src='';
@@ -611,7 +958,7 @@ function sendWhatsApp(){
   const msg = encodeURIComponent(
     `Hi ${currentData.biz}! 👋\n\nWe've built a specialized AI Employee demo specifically for your ${currentData.industry} business in ${currentData.city}.\n\nYour AI Employee is ready to answer calls, qualify leads, and book appointments 24/7.\n\n🔗 Watch it in action: ${currentURL}\n\n— Elegant Options AI`
   );
-  const phone = document.getElementById('phone').value.replace(/\D/g,'');
+  const phone = (currentData.phone||'').replace(/\D/g,'');
   window.open(`https://wa.me/${phone}?text=${msg}`,'_blank');
 }
 
@@ -622,7 +969,9 @@ function copyMessage(){
   showToast('📋 Message copied!','success');
 }
 
-// ── HISTORY ──
+// ═══════════════════════════════════════════════════
+//  HISTORY
+// ═══════════════════════════════════════════════════
 function saveToHistory(biz, industry, city, url){
   const history = JSON.parse(localStorage.getItem('demo_history')||'[]');
   history.unshift({biz, industry, city, url, time: new Date().toLocaleString()});
@@ -655,15 +1004,17 @@ function clearHistory(){
   renderHistory();
 }
 
-// ── HELPERS ──
+// ═══════════════════════════════════════════════════
+//  HELPERS
+// ═══════════════════════════════════════════════════
 function setLoading(btn, loading){
   if(btn===1){
     document.getElementById('spinner1').classList.toggle('show',loading);
-    document.getElementById('btn1-text').textContent = loading ? 'Generating...' : '🚀 GENERATE DEMO LINK';
+    document.getElementById('btn1-text').textContent = loading ? 'Generating...' : '🔗 Generate Quick Link (بدون n8n)';
     document.querySelector('.btn-primary').disabled = loading;
   } else {
     document.getElementById('spinner2').classList.toggle('show',loading);
-    document.getElementById('btn2-text').textContent = loading ? 'Sending to n8n...' : '⚡ SEND VIA n8n (Auto-Analyze + Deliver)';
+    document.getElementById('btn2-text').textContent = loading ? 'Sending to n8n...' : '⚡ إنشاء وإرسال الديمو تلقائياً';
     document.getElementById('n8n-btn').disabled = loading;
   }
 }
@@ -678,5 +1029,8 @@ function showToast(msg, type='success'){
 // Init
 renderHistory();
 </script>
+
+<!-- Google Maps SDK not needed — Places API called via n8n -->
+
 </body>
 </html>
