@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0"/>
+<title id="pg-title">Business — AI Employee Demo</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Jost:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+/* -- VARS -- */
+:root{
+  --navy:#0D1B2A; --blue:#1565C0; --blue2:#1976D2; --blue3:#0D47A1;
+  --sky:#E3F2FD; --gold:#C9A84C; --gold2:#E8C96A;
+  --cream:#FAFAF7; --cream2:#F0EAE0;
+  --ink:#1A1A1A; --gray:#6B7280; --border:#D9D3C7;
+  --green:#4CAF50; --white:#fff;
+  --img1:url('https://assets.cdn.filesafe.space/vX7gQQOe9PXtkGes2GOJ/media/69d56b15ad0e3e32705d364d.png');
+  --img2:url('https://assets.cdn.filesafe.space/vX7gQQOe9PXtkGes2GOJ/media/69d56b158cfbd7a75593e5ff.png');
+  --img3:url('https://assets.cdn.filesafe.space/vX7gQQOe9PXtkGes2GOJ/media/69d52455a7dcb4cff013e4d7.webp');
+  --img4:url('https://assets.cdn.filesafe.space/vX7gQQOe9PXtkGes2GOJ/media/69d56b15f5ebf27de323d2d8.png');
+  --img5:url('https://assets.cdn.filesafe.space/vX7gQQOe9PXtkGes2GOJ/media/69d5245586416fa8388aa945.webp');
+  --img6:url('https://assets.cdn.filesafe.space/vX7gQQOe9PXtkGes2GOJ/media/69d5245586416fa8388aa947.webp');
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Jost',sans-serif;background:var(--cream);color:var(--ink);overflow-x:hidden}
+
+/* TOPBAR */
+.topbar{background:var(--navy);padding:6px 20px;display:flex;align-items:center;justify-content:space-between;gap:6px}
+.tb-info{font-size:11px;color:rgba(255,255,255,0.45);display:flex;align-items:center;gap:8px}
+.tb-sep{opacity:.3}
+.tb-phone{background:var(--blue);color:#fff;padding:5px 13px;border-radius:4px;font-size:11px;font-weight:600;text-decoration:none;white-space:nowrap;border:none;cursor:pointer;font-family:'Jost',sans-serif}
+
+/* NAV */
+nav{background:#fff;padding:11px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200;box-shadow:0 2px 12px rgba(0,0,0,0.09);border-bottom:3px solid var(--blue)}
+.nav-brand{font-family:'Cormorant Garamond',serif;font-size:19px;font-weight:700;color:var(--navy);line-height:1}
+.nav-cta{background:var(--blue);color:#fff;padding:9px 17px;border-radius:6px;font-size:12px;font-weight:600;text-decoration:none;white-space:nowrap;border:none;cursor:pointer;font-family:'Jost',sans-serif}
+
+/* HERO */
+.hero{
+  position:relative;min-height:82vh;display:flex;align-items:flex-end;overflow:hidden;
+  background:var(--navy) var(--img1) center/cover no-repeat;
+}
+.hero-grad{position:absolute;inset:0;background:linear-gradient(112deg,rgba(13,27,42,.96) 0%,rgba(13,27,42,.65) 52%,rgba(13,27,42,.18) 100%)}
+.hero-body{position:relative;z-index:2;padding:40px 20px 50px;max-width:580px}
+.hero-tag{
+  display:inline-flex;align-items:center;gap:7px;
+  background:rgba(21,101,192,.22);border:1px solid rgba(21,101,192,.45);
+  color:#90CAF9;font-size:10px;font-weight:600;letter-spacing:.1em;
+  text-transform:uppercase;padding:5px 12px;border-radius:3px;margin-bottom:18px;
+}
+.live-dot{width:6px;height:6px;border-radius:50%;background:var(--green);flex-shrink:0;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(76,175,80,.5)}50%{box-shadow:0 0 0 5px rgba(76,175,80,0)}}
+.hero h1{font-family:'Cormorant Garamond',serif;font-size:38px;font-weight:700;color:#fff;line-height:1.1;letter-spacing:-.02em;margin-bottom:13px}
+.hero h1 em{color:var(--gold2);font-style:normal}
+.hero-sub{font-size:14px;color:rgba(255,255,255,.72);line-height:1.75;margin-bottom:26px}
+.hero-btns{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:20px}
+.btn-blue{background:var(--blue);color:#fff;padding:13px 20px;border-radius:6px;font-size:13px;font-weight:600;border:none;cursor:pointer;display:inline-flex;align-items:center;gap:6px;transition:.2s;font-family:'Jost',sans-serif;text-decoration:none}
+.btn-blue:hover{background:var(--blue2)}
+.btn-ghost{background:rgba(255,255,255,.09);color:#fff;padding:12px 18px;border-radius:6px;font-size:13px;font-weight:500;border:1.5px solid rgba(255,255,255,.3);cursor:pointer;display:inline-flex;align-items:center;gap:6px;transition:.2s;font-family:'Jost',sans-serif}
+.btn-ghost:hover{border-color:#fff;background:rgba(255,255,255,.16)}
+.hero-trust{display:flex;flex-wrap:wrap;gap:10px}
+.ht{font-size:11px;color:rgba(255,255,255,.52);display:flex;align-items:center;gap:4px}
+
+/* EMERGENCY */
+.emerg{background:var(--blue3);padding:12px 20px;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.emerg-t{font-size:13px;font-weight:600;color:#fff}
+.emerg-s{font-size:10px;color:rgba(255,255,255,.6);margin-top:2px}
+.emerg-btn{background:var(--gold);color:var(--navy);padding:9px 16px;border-radius:4px;font-size:12px;font-weight:700;border:none;cursor:pointer;font-family:'Jost',sans-serif;white-space:nowrap}
+
+/* STATS */
+.stats{background:var(--navy);display:grid;grid-template-columns:repeat(5,1fr)}
+.stat{padding:14px 8px;text-align:center;border-right:1px solid rgba(255,255,255,.07)}
+.stat:last-child{border-right:none}
+.stat-n{font-family:'Cormorant Garamond',serif;font-size:21px;font-weight:700;color:var(--gold2);display:block}
+.stat-l{font-size:9px;color:rgba(255,255,255,.38);margin-top:2px;font-weight:500;text-transform:uppercase;letter-spacing:.06em}
+
+/* CERTS */
+.certs{background:#fff;border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:14px 20px;text-align:center}
+.certs-lbl{font-size:9px;color:var(--gray);font-weight:600;letter-spacing:.12em;text-transform:uppercase;margin-bottom:10px}
+.certs-row{display:flex;gap:7px;flex-wrap:wrap;justify-content:center}
+.cert{background:var(--cream2);border:1px solid var(--border);border-radius:4px;padding:6px 11px;font-size:10px;font-weight:700;color:var(--ink)}
+
+/* SECTIONS */
+.sec{padding:40px 20px}
+.sec-cream{background:var(--cream2)}
+.sec-white{background:#fff}
+.sec-navy{background:var(--navy)}
+.eyebrow{font-size:9px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--blue);display:block;margin-bottom:8px}
+.sec-navy .eyebrow{color:var(--gold2)}
+.sec h2{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:700;line-height:1.2;letter-spacing:-.02em;margin-bottom:12px;color:var(--navy)}
+.sec-navy h2{color:#fff}
+.lead{font-size:13px;line-height:1.8;color:var(--gray);margin-bottom:22px}
+.sec-navy .lead{color:rgba(255,255,255,.48)}
+
+/* -- SERVICES GRID -- */
+.svc-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:4px}
+.svc-card{background:#fff;border-radius:10px;overflow:hidden;border:1px solid var(--border);box-shadow:0 2px 8px rgba(0,0,0,.05);transition:.25s}
+.svc-card:hover{transform:translateY(-3px);box-shadow:0 10px 28px rgba(0,0,0,.1);border-color:var(--blue)}
+.svc-img{
+  height:130px;overflow:hidden;position:relative;
+  background:linear-gradient(135deg,#1565C0,#0D47A1) center/cover no-repeat;
+}
+.svc-img img{width:100%;height:100%;object-fit:cover;display:block;transition:.4s}
+.svc-card:hover .svc-img img{transform:scale(1.05)}
+.svc-badge{position:absolute;top:7px;left:7px;background:var(--blue);color:#fff;font-size:8px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:2px 7px;border-radius:3px}
+.svc-body{padding:10px 11px}
+.svc-title{font-family:'Cormorant Garamond',serif;font-size:15px;font-weight:700;color:var(--navy);margin-bottom:4px;line-height:1.2}
+.svc-desc{font-size:10px;color:var(--gray);line-height:1.5}
+.svc-lnk{display:inline-block;font-size:10px;font-weight:600;color:var(--blue);margin-top:6px}
+
+/* -- WHY US / ABOUT -- */
+.why-img-wrap{
+  border-radius:10px;overflow:hidden;margin-bottom:20px;
+  box-shadow:0 8px 28px rgba(0,0,0,.14);height:200px;
+  background:var(--img2) center/cover no-repeat;
+}
+.why-list{display:flex;flex-direction:column;gap:14px}
+.why-item{display:flex;gap:11px;align-items:flex-start}
+.why-num{width:30px;height:30px;border-radius:5px;background:var(--blue);color:#fff;font-family:'Cormorant Garamond',serif;font-size:15px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.why-title{font-size:12px;font-weight:700;color:var(--navy);margin-bottom:3px}
+.why-desc{font-size:11px;color:var(--gray);line-height:1.55}
+
+/* -- AI CARDS -- */
+.ai-cards{display:flex;flex-direction:column;gap:12px}
+.ai-card{background:rgba(255,255,255,.05);border:1px solid rgba(201,168,76,.3);border-radius:12px;padding:20px}
+.ai-hdr{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.ai-icon{width:40px;height:40px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.ai-icon-b{background:rgba(21,101,192,.2)}
+.ai-icon-g{background:rgba(21,101,192,.15)}
+.ai-title{font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:700;color:#fff;margin-bottom:2px}
+.ai-sub{font-size:10px;color:rgba(255,255,255,.4)}
+.ai-dot{width:7px;height:7px;border-radius:50%;background:var(--green);margin-left:auto;animation:pulse 2s infinite}
+.chat-box{background:rgba(0,0,0,.28);border-radius:8px;padding:10px;margin-bottom:12px}
+.cbub{padding:7px 10px;border-radius:7px;font-size:11px;margin-bottom:5px;max-width:84%;line-height:1.5}
+.cu{background:var(--blue);color:#fff;margin-left:auto}
+.ca{background:rgba(255,255,255,.1);color:rgba(255,255,255,.82)}
+.typing{display:flex;gap:3px;padding:7px 10px;background:rgba(255,255,255,.07);border-radius:7px;width:fit-content}
+.td{width:5px;height:5px;border-radius:50%;background:rgba(255,255,255,.38);animation:tdot .9s ease infinite}
+.td:nth-child(2){animation-delay:.2s}.td:nth-child(3){animation-delay:.4s}
+@keyframes tdot{0%,80%,100%{transform:scale(.7);opacity:.38}40%{transform:scale(1);opacity:1}}
+.wave{background:rgba(0,0,0,.25);border-radius:8px;padding:12px;display:flex;align-items:center;justify-content:center;gap:4px;margin-bottom:12px}
+.wb{width:4px;border-radius:4px;background:var(--gold2);animation:wv .8s ease-in-out infinite}
+.wb:nth-child(1){height:9px}.wb:nth-child(2){height:20px;animation-delay:.1s}
+.wb:nth-child(3){height:14px;animation-delay:.2s}.wb:nth-child(4){height:26px;animation-delay:.3s}
+.wb:nth-child(5){height:18px;animation-delay:.4s}.wb:nth-child(6){height:10px;animation-delay:.5s}
+.wb:nth-child(7){height:22px;animation-delay:.25s}.wb:nth-child(8){height:13px;animation-delay:.1s}
+@keyframes wv{0%,100%{transform:scaleY(.4);opacity:.4}50%{transform:scaleY(1);opacity:1}}
+.btn-ai{width:100%;padding:11px;border-radius:7px;border:none;font-size:12px;font-weight:600;font-family:'Jost',sans-serif;cursor:pointer;transition:.2s;display:flex;align-items:center;justify-content:center;gap:5px}
+.btn-ai-b{background:var(--blue);color:#fff}
+.btn-ai-b:hover{background:var(--blue2)}
+.btn-ai-g{background:rgba(21,101,192,.3);color:#90CAF9;border:1px solid rgba(21,101,192,.4)}
+.ai-note{text-align:center;margin-top:12px;font-size:10px;color:rgba(255,255,255,.25)}
+
+/* -- REVIEWS -- */
+.g-badge{display:inline-flex;align-items:center;gap:10px;background:#fff;border:1px solid var(--border);border-radius:7px;padding:8px 13px;margin-bottom:16px;box-shadow:0 2px 6px rgba(0,0,0,.05)}
+.g-stars{color:#FBBC04;font-size:13px;letter-spacing:1px}
+.g-txt{font-size:11px;font-weight:600;color:var(--ink)}
+.g-cnt{font-size:10px;color:var(--gray)}
+
+/* -- CONTACT FORM -- */
+.c-wrap{display:flex;flex-direction:column;gap:20px}
+.steps{display:flex;flex-direction:column;gap:12px}
+.step{display:flex;gap:10px;align-items:flex-start}
+.step-c{width:30px;height:30px;min-width:30px;border-radius:50%;border:2px solid var(--gold);display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:15px;font-weight:700;color:var(--gold)}
+.step-t{font-size:12px;font-weight:600;color:var(--navy);margin-bottom:2px}
+.step-d{font-size:11px;color:var(--gray)}
+.guar{background:#fff;border:1px solid var(--border);border-radius:7px;padding:12px;margin-top:4px;border-left:4px solid var(--blue)}
+.guar-t{font-size:11px;font-weight:700;color:var(--navy);margin-bottom:2px}
+.guar-d{font-size:10px;color:var(--gray);line-height:1.5}
+.form-card{background:#fff;border:1px solid var(--border);border-radius:10px;padding:18px;box-shadow:0 4px 18px rgba(0,0,0,.06)}
+.f-row{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.fg{margin-bottom:10px}
+.flbl{font-size:9px;font-weight:600;color:var(--ink);letter-spacing:.06em;text-transform:uppercase;display:block;margin-bottom:4px}
+.finp{width:100%;padding:10px 12px;background:var(--cream);border:1.5px solid var(--border);border-radius:7px;font-size:12px;font-family:'Jost',sans-serif;color:var(--ink);outline:none;transition:.2s}
+.finp:focus{border-color:var(--blue);background:#fff;box-shadow:0 0 0 3px rgba(21,101,192,.1)}
+.finp::placeholder{color:#B0A9A0}
+select.finp{appearance:none;cursor:pointer}
+textarea.finp{resize:none;height:68px;line-height:1.5}
+.urg-row{display:flex;gap:6px}
+.upill{flex:1;padding:8px 4px;border-radius:5px;border:1.5px solid var(--border);background:var(--cream);font-size:10px;font-weight:600;cursor:pointer;text-align:center;transition:.2s;color:var(--ink)}
+.upill.on{border-color:var(--blue);background:var(--sky);color:var(--blue)}
+.upill.ue{border-color:var(--blue3);background:#E3F2FD;color:var(--blue3)}
+.btn-sub{width:100%;padding:13px;border-radius:7px;background:var(--navy);color:#fff;border:none;cursor:pointer;font-size:12px;font-weight:700;font-family:'Jost',sans-serif;letter-spacing:.04em;transition:.25s;margin-top:4px;display:flex;align-items:center;justify-content:center;gap:6px}
+.btn-sub:hover{background:var(--blue);transform:translateY(-2px);box-shadow:0 6px 18px rgba(21,101,192,.3)}
+.f-disc{text-align:center;font-size:9px;color:var(--gray);margin-top:7px}
+
+/* -- BANNER -- */
+.banner{
+  position:relative;min-height:180px;display:flex;align-items:center;overflow:hidden;
+  background:var(--navy) var(--img6) right center/cover no-repeat;
+}
+.banner-grad{position:absolute;inset:0;background:linear-gradient(90deg,rgba(13,27,42,.97) 0%,rgba(13,27,42,.85) 50%,rgba(13,27,42,.25) 100%)}
+.banner-body{position:relative;z-index:2;padding:26px 20px;max-width:65%}
+.banner-pulse{display:inline-flex;align-items:center;gap:6px;font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.5);margin-bottom:7px}
+.pdot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:pulse 2s infinite}
+.banner h2{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:700;color:#fff;line-height:1.2;margin-bottom:5px}
+.banner-sub{font-size:11px;color:rgba(255,255,255,.55);margin-bottom:13px}
+.banner-btns{display:flex;gap:9px;flex-wrap:wrap}
+.bbn-w{background:#fff;color:var(--blue);padding:9px 16px;border-radius:5px;font-size:11px;font-weight:700;text-decoration:none;border:none;cursor:pointer;font-family:'Jost',sans-serif}
+.bbn-b{background:var(--blue);color:#fff;padding:9px 16px;border-radius:5px;font-size:11px;font-weight:700;border:none;cursor:pointer;font-family:'Jost',sans-serif}
+
+/* -- MAPS -- */
+.map-wrap{border-radius:10px;overflow:hidden;box-shadow:0 4px 18px rgba(0,0,0,.1);border:1px solid var(--border)}
+.map-wrap iframe{width:100%;height:260px;border:0;display:block}
+.map-info{margin-top:11px;padding:11px;background:var(--sky);border-radius:7px;display:flex;align-items:center;gap:9px;font-size:12px;color:var(--blue)}
+
+/* -- URGENCY FOOTER -- */
+.uf{
+  background:var(--navy) var(--img4) center/cover no-repeat;
+  position:relative;padding:36px 20px;text-align:center;border-top:3px solid var(--blue);overflow:hidden;
+}
+.uf-grad{position:absolute;inset:0;background:rgba(13,27,42,.92)}
+.uf-body{position:relative;z-index:2}
+.uf h3{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:700;color:#fff;margin-bottom:6px}
+.uf p{font-size:13px;color:rgba(255,255,255,.5);margin-bottom:16px}
+.btn-gold{display:inline-flex;align-items:center;gap:6px;background:var(--gold);color:var(--navy);padding:13px 26px;border-radius:5px;font-size:13px;font-weight:700;border:none;cursor:pointer;font-family:'Jost',sans-serif;transition:.2s}
+.btn-gold:hover{background:var(--gold2)}
+
+/* FOOTER */
+footer{background:#0A0E14;padding:18px 20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px}
+.f-brand{font-family:'Cormorant Garamond',serif;font-size:16px;font-weight:700;color:#fff}
+.f-brand span{color:var(--gold2)}
+.f-copy{font-size:9px;color:rgba(255,255,255,.25)}
+.f-lnks{display:flex;gap:12px}
+.f-lnks a{font-size:9px;color:rgba(255,255,255,.35);text-decoration:none}
+
+/* REVEAL */
+/* Reveal: JS sets opacity:0 dynamically so content is never stuck hidden */
+.rv{transition:.65s ease}
+.rv.rv-hidden{opacity:0;transform:translateY(18px)}
+.rv.vis{opacity:1;transform:none}
+
+/* RESPONSIVE */
+@media(max-width:599px){
+  .hero{min-height:85svh}
+  .hero-body{padding:26px 16px 42px}
+  .hero h1{font-size:30px}
+  .hero-btns{flex-direction:column}
+  .stats{grid-template-columns:repeat(3,1fr)}
+  .stat:nth-child(4),.stat:nth-child(5){display:none}
+  .svc-grid{grid-template-columns:1fr 1fr}
+  .f-row{grid-template-columns:1fr}
+  footer{flex-direction:column;text-align:center}
+  .f-lnks{justify-content:center}
+}
+@media(min-width:600px){
+  .ai-cards{flex-direction:row}
+  .c-wrap{flex-direction:row;gap:28px}
+  .steps{flex:0 0 38%}
+}
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="tb-info">
+    <span>Mon&#8211;Sat 8am&#8211;10pm</span><span class="tb-sep">|</span>
+    <span>Emergency 24/7</span><span class="tb-sep">|</span>
+    <span id="tb-city">City</span>
+  </div>
+  <button class="tb-phone" id="tb-phone">&#128222; Call Now &#8212; Free Callout</button>
+</div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-brand" id="nav-brand">Business <span style="color:var(--blue)">Name</span></div>
+  <button class="nav-cta" onclick="goToForm()">&#128203; Free Quote</button>
+</nav>
+
+<!-- HERO — Image 4: 69d56b15ad0e3e32705d364d.png -->
+<div class="hero" id="hero-section">
+  <div class="hero-grad"></div>
+  <div class="hero-body">
+    <div class="hero-tag">
+      <span class="live-dot"></span>
+      CERTIFIED <span id="h-ind-t">PROFESSIONALS</span> &nbsp;&#183;&nbsp; <span id="h-city-t">YOUR CITY</span>
+    </div>
+    <h1>Your Trusted<br><em id="h-ind">Service</em><br>Experts in <em id="h-city">Your City</em></h1>
+    <p class="hero-sub" id="h-sub">Professional service by certified engineers. <strong id="h-biz" style="color:#fff">Business</strong> responds fast &#8212; available 24/7 across <span id="h-city2">your area</span>.</p>
+    <div class="hero-btns">
+      <button class="btn-blue" id="h-call">&#128222; Call Now &#8212; No Callout Fee</button>
+      <button class="btn-ghost" onclick="goToForm()">&#128203; Request Free Quote</button>
+    </div>
+    <div class="hero-trust">
+      <span class="ht">&#10003; No Call-Out Fee</span>
+      <span class="ht" id="ht-cert">&#127885; Certified Engineers</span>
+      <span class="ht" id="ht-rating">&#11088; Top Rated</span>
+      <span class="ht">&#10003; 12-Month Guarantee</span>
+    </div>
+  </div>
+</div>
+
+<!-- EMERGENCY -->
+<div class="emerg">
+  <div>
+    <div class="emerg-t" id="e-title">Emergency? We&#8217;re On Call 24/7</div>
+    <div class="emerg-s">Engineer on the way within minutes</div>
+  </div>
+  <button class="emerg-btn" id="e-call">&#128222; Emergency Line</button>
+</div>
+
+<!-- STATS -->
+<div class="stats">
+  <div class="stat"><span class="stat-n" id="stat-rating">5.0</span><div class="stat-l">Google Rating</div></div>
+  <div class="stat"><span class="stat-n" id="stat-reviews">100+</span><div class="stat-l">Reviews</div></div>
+  <div class="stat"><span class="stat-n">24/7</span><div class="stat-l">Available</div></div>
+  <div class="stat"><span class="stat-n">&lt;60m</span><div class="stat-l">Response</div></div>
+  <div class="stat"><span class="stat-n">12mo</span><div class="stat-l">Guarantee</div></div>
+</div>
+
+<!-- CERTS -->
+<div class="certs rv">
+  <div class="certs-lbl">Certified &amp; Approved By</div>
+  <div class="certs-row" id="certs-row">
+    <div class="cert">&#128293; Gas Safe</div>
+    <div class="cert">&#10003; CheckaTrade</div>
+    <div class="cert">&#127885; TrustaTrader</div>
+    <div class="cert">&#128737; NICEIC</div>
+  </div>
+</div>
+
+<!-- SERVICES — Images 1,2,3,5 -->
+<section class="sec sec-cream rv" id="services">
+  <span class="eyebrow">Our Services</span>
+  <h2 id="svc-h2">Complete Professional Services</h2>
+  <p class="lead" id="svc-lead">Every job completed to the highest standard with a full 12-month workmanship guarantee.</p>
+  <div class="svc-grid" id="svc-grid"></div>
+</section>
+
+<!-- WHY US — Image 2: 69d56b158cfbd7a75593e5ff.png -->
+<section class="sec sec-white rv" id="about">
+  <span class="eyebrow">Why Choose Us</span>
+  <h2 id="why-h2">The Difference</h2>
+  <div class="why-img-wrap" id="why-img-wrap"></div>
+  <div class="why-list">
+    <div class="why-item">
+      <div class="why-num">1</div>
+      <div><div class="why-title">&#9889; Fast Response &#8212; On Our Way</div><div class="why-desc" id="wy1">Our certified engineers are dispatched immediately. Brilliant response times, day or night.</div></div>
+    </div>
+    <div class="why-item">
+      <div class="why-num">2</div>
+      <div><div class="why-title">&#127885; Fully Certified &amp; Insured</div><div class="why-desc">Every engineer carries their certification and is fully insured. You&#8217;re in safe hands.</div></div>
+    </div>
+    <div class="why-item">
+      <div class="why-num">3</div>
+      <div><div class="why-title">&#163; No Hidden Charges &#8212; Ever</div><div class="why-desc">We provide a clear written quote before starting. No surprises on the invoice.</div></div>
+    </div>
+    <div class="why-item">
+      <div class="why-num">4</div>
+      <div><div class="why-title">&#10003; 12-Month Workmanship Guarantee</div><div class="why-desc">All work is fully guaranteed. If anything isn&#8217;t right, we come back at no extra cost.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- AI SECTION -->
+<section class="sec sec-navy rv">
+  <span class="eyebrow">Your AI Assistant &#8212; Available Now</span>
+  <h2>Chat or Call <em style="color:var(--gold2);font-style:normal" id="ai-biz">Us</em>.<br>We Never Sleep.</h2>
+  <p class="lead" id="ai-lead">Get in touch any time &#8212; day or night. Our AI assistant takes your details and arranges a visit instantly.</p>
+  <div class="ai-cards">
+    <div class="ai-card" style="cursor:pointer" onclick="openWidget()">
+      <div class="ai-hdr">
+        <div class="ai-icon ai-icon-b">&#128172;</div>
+        <div><div class="ai-title">Send Us a Message</div><div class="ai-sub">Instant reply &#183; 24/7</div></div>
+        <div class="ai-dot"></div>
+      </div>
+      <div class="chat-box">
+        <div class="cbub cu">I need urgent help in <span id="cc-city">your city</span></div>
+        <div class="cbub ca">No problem! I&#8217;m the <span id="cc-biz">AI</span> assistant. I&#8217;ll get someone to you right away. What&#8217;s your postcode?</div>
+        <div class="typing"><span class="td"></span><span class="td"></span><span class="td"></span></div>
+      </div>
+      <button class="btn-ai btn-ai-b">&#128172; Start a Chat Now &#8594;</button>
+    </div>
+    <div class="ai-card">
+      <div class="ai-hdr">
+        <div class="ai-icon ai-icon-g">&#128222;</div>
+        <div><div class="ai-title">Give Us a Ring</div><div class="ai-sub">AI answers &#183; 24/7</div></div>
+        <div class="ai-dot"></div>
+      </div>
+      <div class="wave">
+        <div class="wb"></div><div class="wb"></div><div class="wb"></div><div class="wb"></div>
+        <div class="wb"></div><div class="wb"></div><div class="wb"></div><div class="wb"></div>
+      </div>
+      <div style="font-size:11px;color:rgba(255,255,255,.42);text-align:center;margin-bottom:12px">Our voice AI answers immediately, assesses your issue, and books your visit in seconds.</div>
+      <button class="btn-ai btn-ai-g" id="ai-call">&#128222; Call Us Now &#8594;</button>
+    </div>
+  </div>
+  <div class="ai-note">&#128274; All conversations are private and secure.</div>
+</section>
+
+<!-- REVIEWS -->
+<section class="sec sec-white rv" id="reviews">
+  <span class="eyebrow">Client Reviews</span>
+  <div class="g-badge" id="g-badge" style="display:none">
+    <div>
+      <div class="g-stars" id="g-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+      <div class="g-txt" id="g-txt">Google Reviews</div>
+    </div>
+    <div style="border-left:1px solid var(--border);padding-left:10px">
+      <div class="g-cnt">Powered by</div>
+      <div style="font-size:10px;color:var(--blue);font-weight:600">Elegant Options AI &#10003;</div>
+    </div>
+  </div>
+  <h2>What Our Clients Say<br>in <span id="rv-city">Your City</span></h2>
+  <script type='text/javascript' src='https://brand.elegant-options.com/reputation/assets/review-widget.js'></script>
+  <iframe class='lc_reviews_widget'
+    src='https://brand.elegant-options.com/reputation/widgets/review_widget/vX7gQQOe9PXtkGes2GOJ'
+    frameborder='0' scrolling='no'
+    style='min-width:100%;width:100%;border:none;min-height:480px;display:block'>
+  </iframe>
+</section>
+
+<!-- CONTACT FORM -->
+<section class="sec sec-cream rv" id="contact">
+  <span class="eyebrow">Request a Visit</span>
+  <h2>We Come To You<br>in <span id="fc-city">Your City</span></h2>
+  <div class="c-wrap">
+    <div class="steps">
+      <div class="step"><div class="step-c">1</div><div><div class="step-t">Fill in your details below</div><div class="step-d">Takes less than a minute</div></div></div>
+      <div class="step"><div class="step-c">2</div><div><div class="step-t">We&#8217;ll ring you within 5 minutes</div><div class="step-d">To confirm your issue and sort a time</div></div></div>
+      <div class="step"><div class="step-c">3</div><div><div class="step-t">Engineer arrives at your door</div><div class="step-d" id="s3">Fully equipped and ready to go</div></div></div>
+      <div class="guar">
+        <div class="guar-t">&#128274; Free Quote &#8212; No Obligation</div>
+        <div class="guar-d">No callout fee. No pressure. Just honest advice from <span id="gb">our team</span>.</div>
+      </div>
+    </div>
+    <div class="form-card" id="form-card">
+      <div class="f-row">
+        <div class="fg"><label class="flbl">Full Name *</label><input class="finp" type="text" placeholder="Your name" id="fn"/></div>
+        <div class="fg"><label class="flbl">Phone *</label><input class="finp" type="tel" placeholder="+965 XXXX XXXX" id="fp"/></div>
+      </div>
+      <div class="f-row">
+        <div class="fg"><label class="flbl">Your Area</label><input class="finp" type="text" placeholder="District / Area" id="fpc"/></div>
+        <div class="fg"><label class="flbl">Service Type</label>
+          <select class="finp" id="svc-select">
+            <option value="">Select service...</option>
+            <option>Emergency Repair</option>
+            <option>Routine Service</option>
+            <option>Installation</option>
+            <option>Free Inspection</option>
+          </select>
+        </div>
+      </div>
+      <div class="fg"><label class="flbl">Urgency</label>
+        <div class="urg-row">
+          <div class="upill ue on" onclick="setU(this)">Emergency</div>
+          <div class="upill" onclick="setU(this)">Today</div>
+          <div class="upill" onclick="setU(this)">This Week</div>
+        </div>
+      </div>
+      <div class="fg"><label class="flbl">Describe the Issue</label>
+        <textarea class="finp" placeholder="Briefly tell us what you need..."></textarea>
+      </div>
+      <button class="btn-sub" onclick="submitForm()">SEND MY REQUEST &#8212; WE&#8217;LL CALL YOU SHORTLY</button>
+      <div class="f-disc">&#128274; No spam. No marketing. We only call about your request.</div>
+    </div>
+  </div>
+</section>
+
+<!-- BANNER — Image 6: 69d5245586416fa8388aa947.webp -->
+<div class="banner">
+  <div class="banner-grad"></div>
+  <div class="banner-body">
+    <div class="banner-pulse"><span class="pdot"></span> AVAILABLE NOW &#183; 24/7</div>
+    <h2 id="banner-h">Your Trusted Local Experts</h2>
+    <div class="banner-sub" id="banner-sub">No callout fee &#183; Certified &#183; 12-month guarantee</div>
+    <div class="banner-btns">
+      <button class="bbn-w" onclick="goToForm()">&#128203; Free Quote</button>
+      <button class="bbn-b" id="banner-call">&#128222; Call Now</button>
+    </div>
+  </div>
+</div>
+
+<!-- MAPS -->
+<section class="sec sec-white rv" id="maps-section" style="display:none">
+  <span class="eyebrow">Find Us</span>
+  <h2>Visit <span id="map-biz">Us</span><br>in <span id="map-city">Your City</span></h2>
+  <p class="lead">We&#8217;re based locally and cover all surrounding areas.</p>
+  <div class="map-wrap">
+    <iframe id="map-iframe" src="" allowfullscreen loading="lazy"></iframe>
+  </div>
+  <div class="map-info">
+    <span style="font-size:18px">&#128205;</span>
+    <span>Serving <strong id="map-city2">your area</strong> and surrounding districts. Same-day visits available.</span>
+  </div>
+</section>
+
+<!-- URGENCY FOOTER — Image 4 as BG: 69d56b15f5ebf27de323d2d8.png -->
+<div class="uf rv">
+  <div class="uf-grad"></div>
+  <div class="uf-body">
+    <h3>Don&#8217;t Leave It &#8212; Get It Sorted Today.</h3>
+    <p><span id="uf-biz">We</span> are available right now &#8212; day or night.</p>
+    <button class="btn-gold" onclick="goToForm()">GET IT SORTED NOW &#8594;</button>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="f-brand" id="f-brand">Business <span>Name</span></div>
+  <div class="f-lnks"><a href="#services">Services</a><a href="#reviews">Reviews</a><a href="#contact">Contact</a></div>
+  <div class="f-copy" id="f-copy">&#169; 2025 Business Name. All rights reserved.</div>
+</footer>
+
+
+<script src="https://widgets.leadconnectorhq.com/loader.js" data-resources-url="https://widgets.leadconnectorhq.com/chat-widget/loader.js" data-widget-id="69d66b3d2385befddc6e730e"></script>
+<script>
+(function(){
+  // Read from injected object (blob) or URL params
+  var raw = window.__P || (function(){
+    var o={}, p=new URLSearchParams(window.location.search);
+    p.forEach(function(v,k){o[k]=v;});
+    return o;
+  })();
+  var BIZ  = raw.biz_name || 'Your Business';
+  var CITY = raw.city     || 'Your City';
+  var IND  = raw.industry || 'Service';
+  var PHONE= raw.phone    || '';
+
+  function s(id, val){ var el=document.getElementById(id); if(el) el.textContent=val; }
+  function h(id, val){ var el=document.getElementById(id); if(el) el.innerHTML=val; }
+
+  // Nav & title
+  s('pg-title', BIZ + ' — AI Employee Demo');
+  h('nav-brand', BIZ.split(' ')[0] + ' <span style="color:var(--blue)">' + (BIZ.split(' ').slice(1).join(' ')||'&nbsp;') + '</span>');
+  s('tb-city', CITY);
+
+  // Hero
+  s('h-ind',   IND);
+  s('h-ind-t', IND.toUpperCase());
+  s('h-city',  CITY);
+  s('h-city-t',CITY.toUpperCase());
+  h('h-sub',   'Professional ' + IND.toLowerCase() + ' by certified engineers. <strong style="color:#fff">' + BIZ + '</strong> responds fast — available 24/7 across ' + CITY + '.');
+  s('h-biz',   BIZ);
+
+  // Sections
+  s('cc-city',  CITY);
+  s('rv-city',  CITY);
+  s('fc-city',  CITY);
+  s('s3',       'Fully equipped and ready · ' + CITY + ' coverage');
+  s('gb',       BIZ);
+  s('uf-biz',   BIZ);
+  s('map-biz',  BIZ);
+  s('map-city', CITY);
+  s('map-city2',CITY);
+
+  // Footer
+  h('f-brand',  BIZ.split(' ')[0] + ' <span>' + (BIZ.split(' ').slice(1).join(' ')||'') + '</span>');
+  s('f-copy',   '© 2025 ' + BIZ + '. All rights reserved.');
+
+  // Phone number on buttons
+  if(PHONE){
+    document.querySelectorAll('a[href="tel:"]').forEach(function(a){a.href='tel:'+PHONE;});
+  }
+})();
+</script>
+<style>
+#eo-popup-overlay{position:fixed;inset:0;z-index:99999;background:rgba(0,0,0,0.55);display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity .4s ease}
+#eo-popup-overlay.show{opacity:1;pointer-events:all}
+#eo-popup{background:#fff;border-radius:18px;padding:28px 24px 24px;max-width:320px;width:100%;text-align:center;position:relative;transform:translateY(20px) scale(0.97);transition:transform .4s cubic-bezier(0.34,1.56,0.64,1);box-shadow:0 20px 60px rgba(0,0,0,0.25)}
+#eo-popup-overlay.show #eo-popup{transform:translateY(0) scale(1)}
+#eo-popup-close{position:absolute;top:12px;right:14px;background:none;border:none;font-size:18px;color:#999;cursor:pointer}
+.eo-pi{font-size:36px;margin-bottom:10px}
+.eo-pt{font-size:17px;font-weight:700;color:#0D1B2A;margin-bottom:6px;line-height:1.3}
+.eo-ps{font-size:13px;color:#666;line-height:1.6;margin-bottom:18px}
+.eo-ps strong{color:#0D1B2A}
+.eo-pc{display:block;width:100%;background:linear-gradient(135deg,#1565C0,#1976D2);color:#fff;font-size:14px;font-weight:700;padding:14px 20px;border-radius:12px;border:none;cursor:pointer;text-decoration:none;box-shadow:0 4px 16px rgba(21,101,192,0.4)}
+.eo-pn{font-size:11px;color:#999;margin-top:10px}
+</style>
+<div id="eo-popup-overlay">
+  <div id="eo-popup">
+    <button id="eo-popup-close" onclick="document.getElementById('eo-popup-overlay').classList.remove('show');_eoShown=true;">&#10005;</button>
+    <div class="eo-pi">&#127873;</div>
+    <div class="eo-pt">Get a Smart Web Suite — Completely FREE</div>
+    <div class="eo-ps">A <strong>Smart Web Suite</strong> — a speaking website with AI voice, chat &amp; booking — included <strong>free</strong> with any AI Employee plan.</div>
+    <a class="eo-pc" href="https://app.elegant-options.com/v2/preview/ZXeuDCQakU5blIPsczMu?notrack=true" target="_blank">&#128640; Claim Free Setup &rarr;</a>
+    <div class="eo-pn">No contracts &middot; Setup in 48 hours &middot; Cancel anytime</div>
+  </div>
+</div>
+<script>
+var _eoShown=false;
+setTimeout(function(){
+  if(_eoShown)return;_eoShown=true;
+  var o=document.getElementById('eo-popup-overlay');
+  if(o)o.classList.add('show');
+},120000);
+document.getElementById('eo-popup-overlay').addEventListener('click',function(e){
+  if(e.target===this){this.classList.remove('show');_eoShown=true;}
+});
+</script>
+</body>
+</html>
